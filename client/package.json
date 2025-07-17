@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
-    "react-quill": "^2.0.0"
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
   }
 }
