@@ -213,7 +213,7 @@ export default function Dashboard() {
                         {writing.lastEdited}
                       </span>
                       <span>{writing.wordCount} words</span>
-                      <span className="px-2 py-1 bg-sage-100 rounded text-sage-700 dark:bg-sage-900 dark:text-sage-100">
+                      <span className="px-2 py-1 bg-sage-100 rounded text-sage-700 dark:bg-white/20 dark:text-white">
                         {writing.category}
                       </span>
                     </div>
