@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
+import { ThemeToggle } from "../components/ui/theme-toggle";
 import { BookOpen, PenTool, Users, Heart, Feather, Coffee } from "lucide-react";
 
 export default function Index() {
