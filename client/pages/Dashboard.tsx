@@ -68,14 +68,15 @@ export default function Dashboard() {
           <span className="text-2xl font-bold text-warm-800">Inkwell</span>
         </Link>
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <Button
             variant="outline"
-            className="border-warm-300 text-warm-700 hover:bg-warm-100"
+            className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800"
           >
             <Eye className="mr-2 h-4 w-4" />
             Browse Community
           </Button>
-          <Button className="bg-warm-600 hover:bg-warm-700 text-white">
+          <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
             <Plus className="mr-2 h-4 w-4" />
             New Writing
           </Button>
