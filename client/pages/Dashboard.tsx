@@ -117,13 +117,6 @@ export default function Dashboard() {
               <div className="text-warm-600 text-sm">Likes Received</div>
             </CardContent>
           </Card>
-          <Card className="bg-white/70 border-sage-200">
-            <CardContent className="p-6 text-center">
-              <Calendar className="h-8 w-8 text-sage-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-warm-800">7</div>
-              <div className="text-warm-600 text-sm">Day Streak</div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Search and Filter */}
