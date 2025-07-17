@@ -95,7 +95,7 @@ export default function Dashboard() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 justify-center">
           <Card className="bg-white/70 border-warm-200">
             <CardContent className="p-6 text-center">
               <BookOpen className="h-8 w-8 text-warm-600 mx-auto mb-2" />
