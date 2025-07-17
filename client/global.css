@@ -76,66 +76,66 @@
   }
 
   .dark {
-    --background: 25 25% 8%;
-    --foreground: 0 0% 95%;
+    --background: 25 35% 8%;
+    --foreground: 35 25% 95%;
 
-    --card: 25 30% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 28 40% 12%;
+    --card-foreground: 35 25% 95%;
 
-    --popover: 25 30% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 28 40% 12%;
+    --popover-foreground: 35 25% 95%;
 
-    --primary: 35 55% 65%;
-    --primary-foreground: 25 25% 8%;
+    --primary: 25 75% 65%;
+    --primary-foreground: 25 35% 8%;
 
-    --secondary: 25 20% 18%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 30 35% 18%;
+    --secondary-foreground: 35 25% 95%;
 
-    --muted: 25 20% 18%;
-    --muted-foreground: 0 0% 75%;
+    --muted: 30 35% 18%;
+    --muted-foreground: 35 15% 75%;
 
-    --accent: 30 35% 25%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 35 45% 25%;
+    --accent-foreground: 35 25% 95%;
 
     --destructive: 0 65% 55%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive-foreground: 35 25% 95%;
 
-    --border: 25 20% 18%;
-    --input: 25 20% 18%;
-    --ring: 35 55% 65%;
+    --border: 30 35% 18%;
+    --input: 30 35% 18%;
+    --ring: 25 75% 65%;
 
-    --sidebar-background: 25 25% 10%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 35 55% 65%;
-    --sidebar-primary-foreground: 25 25% 8%;
-    --sidebar-accent: 25 20% 18%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 25 20% 18%;
-    --sidebar-ring: 35 55% 65%;
+    --sidebar-background: 28 40% 10%;
+    --sidebar-foreground: 35 20% 90%;
+    --sidebar-primary: 25 75% 65%;
+    --sidebar-primary-foreground: 25 35% 8%;
+    --sidebar-accent: 30 35% 18%;
+    --sidebar-accent-foreground: 35 20% 90%;
+    --sidebar-border: 30 35% 18%;
+    --sidebar-ring: 25 75% 65%;
 
-    /* Dark mode warm colors - improved contrast */
-    --warm-50: 25 25% 15%;
-    --warm-100: 26 20% 22%;
-    --warm-200: 28 25% 30%;
-    --warm-300: 30 25% 45%;
-    --warm-400: 32 30% 58%;
-    --warm-500: 34 35% 68%;
-    --warm-600: 36 40% 75%;
-    --warm-700: 38 45% 82%;
-    --warm-800: 40 50% 88%;
-    --warm-900: 42 55% 92%;
+    /* Dark mode warm orange colors */
+    --warm-50: 30 40% 15%;
+    --warm-100: 32 45% 22%;
+    --warm-200: 35 50% 30%;
+    --warm-300: 38 55% 45%;
+    --warm-400: 40 60% 58%;
+    --warm-500: 42 65% 68%;
+    --warm-600: 44 70% 75%;
+    --warm-700: 46 75% 82%;
+    --warm-800: 48 80% 88%;
+    --warm-900: 50 85% 92%;
 
-    --cream-50: 25 25% 15%;
-    --cream-100: 28 20% 22%;
-    --cream-200: 30 15% 30%;
-    --cream-300: 32 12% 40%;
+    --cream-50: 30 40% 15%;
+    --cream-100: 32 35% 22%;
+    --cream-200: 35 30% 30%;
+    --cream-300: 38 25% 40%;
 
-    --sage-50: 120 10% 15%;
-    --sage-100: 118 12% 22%;
-    --sage-200: 116 15% 30%;
-    --sage-300: 114 18% 45%;
-    --sage-400: 112 22% 58%;
-    --sage-500: 110 25% 68%;
+    --sage-50: 120 15% 15%;
+    --sage-100: 118 18% 22%;
+    --sage-200: 116 20% 30%;
+    --sage-300: 114 25% 45%;
+    --sage-400: 112 30% 58%;
+    --sage-500: 110 35% 68%;
   }
 }
 
