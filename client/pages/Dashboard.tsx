@@ -200,7 +200,7 @@ export default function Dashboard() {
                       <Badge
                         key={tag}
                         variant="outline"
-                        className="text-xs border-warm-300 text-warm-600"
+                        className="text-xs border-warm-300 text-warm-600 dark:border-warm-600 dark:text-warm-300"
                       >
                         {tag}
                       </Badge>
