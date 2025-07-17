@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Stories from "./pages/Stories";
 import ReadingView from "./pages/ReadingView";
+import NewWriting from "./pages/NewWriting";
 
 const queryClient = new QueryClient();
 
@@ -25,8 +26,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/stories" element={<Stories />} />
-            <Route path="/stories/:id" element={<ReadingView />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

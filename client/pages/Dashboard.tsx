@@ -76,10 +76,12 @@ export default function Dashboard() {
             <Eye className="mr-2 h-4 w-4" />
             Browse Community
           </Button>
-          <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
-            <Plus className="mr-2 h-4 w-4" />
-            New Writing
-          </Button>
+          <Link to="/new-writing">
+            <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
+              <Plus className="mr-2 h-4 w-4" />
+              New Writing
+            </Button>
+          </Link>
         </div>
       </nav>
 
