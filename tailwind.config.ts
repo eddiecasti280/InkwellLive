@@ -57,6 +57,33 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Writer-friendly warm colors
+        warm: {
+          50: "hsl(var(--warm-50))",
+          100: "hsl(var(--warm-100))",
+          200: "hsl(var(--warm-200))",
+          300: "hsl(var(--warm-300))",
+          400: "hsl(var(--warm-400))",
+          500: "hsl(var(--warm-500))",
+          600: "hsl(var(--warm-600))",
+          700: "hsl(var(--warm-700))",
+          800: "hsl(var(--warm-800))",
+          900: "hsl(var(--warm-900))",
+        },
+        cream: {
+          50: "hsl(var(--cream-50))",
+          100: "hsl(var(--cream-100))",
+          200: "hsl(var(--cream-200))",
+          300: "hsl(var(--cream-300))",
+        },
+        sage: {
+          50: "hsl(var(--sage-50))",
+          100: "hsl(var(--sage-100))",
+          200: "hsl(var(--sage-200))",
+          300: "hsl(var(--sage-300))",
+          400: "hsl(var(--sage-400))",
+          500: "hsl(var(--sage-500))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
