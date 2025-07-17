@@ -57,14 +57,16 @@ export default function Index() {
               Start Your Journey
             </Button>
           </Link>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-warm-300 text-warm-700 hover:bg-warm-100 px-8 py-4 text-lg"
-          >
-            <BookOpen className="mr-2 h-5 w-5" />
-            Browse Stories
-          </Button>
+          <Link to="/stories">
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-warm-300 text-warm-700 hover:bg-warm-100 px-8 py-4 text-lg"
+            >
+              <BookOpen className="mr-2 h-5 w-5" />
+              Browse Stories
+            </Button>
+          </Link>
         </div>
       </section>
 
