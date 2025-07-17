@@ -16,17 +16,18 @@ export default function Index() {
         <div className="flex items-center gap-4">
           <Link
             to="/dashboard"
-            className="text-warm-700 hover:text-warm-800 transition-colors"
+            className="text-warm-700 hover:text-warm-800 transition-colors dark:text-warm-300 dark:hover:text-warm-200"
           >
             Dashboard
           </Link>
+          <ThemeToggle />
           <Button
             variant="outline"
-            className="border-warm-300 text-warm-700 hover:bg-warm-100"
+            className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800"
           >
             Sign In
           </Button>
-          <Button className="bg-warm-600 hover:bg-warm-700 text-white">
+          <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
             Start Writing
           </Button>
         </div>
