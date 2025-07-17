@@ -206,7 +206,7 @@ export default function Dashboard() {
                       </Badge>
                     ))}
                   </div>
-                  <div className="flex justify-between items-center text-sm text-warm-600">
+                  <div className="flex justify-between items-center text-sm text-warm-600 dark:text-warm-300">
                     <div className="flex items-center gap-4">
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
