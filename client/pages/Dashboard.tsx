@@ -167,10 +167,10 @@ export default function Dashboard() {
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-warm-900 text-xl mb-2">
+                      <CardTitle className="text-warm-900 dark:text-warm-100 text-xl mb-2">
                         {writing.title}
                       </CardTitle>
-                      <p className="text-warm-600 line-clamp-2 mb-3">
+                      <p className="text-warm-600 dark:text-warm-300 line-clamp-2 mb-3">
                         {writing.excerpt}
                       </p>
                     </div>
