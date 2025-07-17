@@ -162,7 +162,7 @@ export default function Dashboard() {
             {writings.map((writing) => (
               <Card
                 key={writing.id}
-                className="bg-white/80 border-warm-200 hover:shadow-lg transition-shadow cursor-pointer"
+                className="bg-white/80 border-warm-200 hover:shadow-lg transition-shadow cursor-pointer dark:bg-warm-950/40 dark:border-warm-700"
               >
                 <CardHeader>
                   <div className="flex justify-between items-start">
