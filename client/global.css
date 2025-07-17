@@ -77,65 +77,65 @@
 
   .dark {
     --background: 25 25% 8%;
-    --foreground: 40 25% 92%;
+    --foreground: 35 20% 88%;
 
     --card: 25 30% 12%;
-    --card-foreground: 40 25% 92%;
+    --card-foreground: 35 20% 88%;
 
     --popover: 25 30% 12%;
-    --popover-foreground: 40 25% 92%;
+    --popover-foreground: 35 20% 88%;
 
     --primary: 35 55% 65%;
     --primary-foreground: 25 25% 8%;
 
     --secondary: 25 20% 18%;
-    --secondary-foreground: 40 25% 92%;
+    --secondary-foreground: 35 20% 88%;
 
     --muted: 25 20% 18%;
-    --muted-foreground: 35 15% 65%;
+    --muted-foreground: 35 15% 72%;
 
     --accent: 30 35% 25%;
-    --accent-foreground: 40 25% 92%;
+    --accent-foreground: 35 20% 88%;
 
-    --destructive: 0 65% 50%;
-    --destructive-foreground: 40 25% 92%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 35 20% 88%;
 
     --border: 25 20% 18%;
     --input: 25 20% 18%;
     --ring: 35 55% 65%;
 
     --sidebar-background: 25 25% 10%;
-    --sidebar-foreground: 40 20% 85%;
+    --sidebar-foreground: 35 15% 82%;
     --sidebar-primary: 35 55% 65%;
     --sidebar-primary-foreground: 25 25% 8%;
     --sidebar-accent: 25 20% 18%;
-    --sidebar-accent-foreground: 40 20% 85%;
+    --sidebar-accent-foreground: 35 15% 82%;
     --sidebar-border: 25 20% 18%;
     --sidebar-ring: 35 55% 65%;
 
-    /* Dark mode warm colors */
+    /* Dark mode warm colors - improved contrast */
     --warm-50: 25 25% 15%;
-    --warm-100: 26 30% 20%;
-    --warm-200: 28 35% 25%;
-    --warm-300: 30 40% 35%;
-    --warm-400: 32 45% 45%;
-    --warm-500: 34 50% 55%;
-    --warm-600: 36 55% 65%;
-    --warm-700: 38 60% 75%;
-    --warm-800: 40 65% 80%;
-    --warm-900: 42 70% 85%;
+    --warm-100: 26 20% 22%;
+    --warm-200: 28 25% 30%;
+    --warm-300: 30 25% 45%;
+    --warm-400: 32 30% 58%;
+    --warm-500: 34 35% 68%;
+    --warm-600: 36 40% 75%;
+    --warm-700: 38 45% 82%;
+    --warm-800: 40 50% 88%;
+    --warm-900: 42 55% 92%;
 
     --cream-50: 25 25% 15%;
-    --cream-100: 28 20% 20%;
-    --cream-200: 30 15% 25%;
-    --cream-300: 32 12% 30%;
+    --cream-100: 28 20% 22%;
+    --cream-200: 30 15% 30%;
+    --cream-300: 32 12% 40%;
 
     --sage-50: 120 10% 15%;
-    --sage-100: 118 12% 20%;
-    --sage-200: 116 15% 25%;
-    --sage-300: 114 18% 35%;
-    --sage-400: 112 22% 45%;
-    --sage-500: 110 25% 55%;
+    --sage-100: 118 12% 22%;
+    --sage-200: 116 15% 30%;
+    --sage-300: 114 18% 45%;
+    --sage-400: 112 22% 58%;
+    --sage-500: 110 25% 68%;
   }
 }
 
