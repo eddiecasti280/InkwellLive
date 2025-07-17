@@ -134,7 +134,7 @@ export default function Index() {
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-warm-700 px-8 py-4 text-lg"
+              className="border-white text-warm-700 hover:bg-white hover:text-black px-8 py-4 text-lg"
             >
               <Feather className="mr-2 h-5 w-5" />
               Get Started Today
