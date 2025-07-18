@@ -148,3 +148,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Remove bottom border of Quill editor and match card radius */
+.ql-container {
+  border: 1px solid hsl(var(--warm-200)) !important;
+  background: hsla(var(--background), 0.7) !important;
+  border-radius: 0.75rem !important;
+  
+}
+
+.ql-toolbar {
+  border-top-left-radius: 0.75rem !important;
+  border-top-right-radius: 0.75rem !important;
+  border-bottom: 1px solid hsl(var(--warm-200)) !important;
+  border-bottom-left-radius: 0.75rem !important;
+  border-bottom-right-radius: 0.75rem !important;
+}
+
+.ql-editor {
+  border-bottom-left-radius: 0.75rem !important;
+  border-bottom-right-radius: 0.75rem !important;
+}

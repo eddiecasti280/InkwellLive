@@ -1,15 +1,48 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
+import { Label } from "../components/ui/label";
 import { Feather } from "lucide-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { supabase } from "../lib/supabaseClient";
+import { toast } from "../hooks/use-toast";
 
 export default function NewWriting() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim() || !content.trim()) {
+      toast({
+        title: "Missing Fields",
+        description: "Please enter both a title and content.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.from("writings").insert([{ title, content }]);
+    if (error) {
+      toast({
+        title: "Error Saving Writing",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Writing Saved!",
+        description: "Your writing has been saved successfully.",
+      });
+      setTitle("");
+      setContent("");
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
@@ -25,23 +58,46 @@ export default function NewWriting() {
           </Link>
         </div>
       </nav>
-
-      <div className="max-w-3xl mx-auto p-6">
-        <Card className="bg-white/90 border-warm-200 dark:bg-amber-900/25 dark:border-amber-700">
+      <div className="flex justify-center items-start px-4 py-12 min-h-[calc(100vh-88px)]">
+        <Card className="w-full max-w-2xl bg-white/90 border-warm-200 dark:bg-amber-900/25 dark:border-amber-700 rounded-xl shadow-md">
           <CardHeader>
             <CardTitle className="text-3xl text-warm-900 dark:text-warm-100 mb-2">New Writing</CardTitle>
           </CardHeader>
           <CardContent>
-            <Input
-              placeholder="Title"
-              className="mb-4 bg-white/70 border-warm-200 focus:border-warm-400"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-            />
-            <div className="mb-4">
-              <ReactQuill theme="snow" value={content} onChange={setContent} />
-            </div>
-            <Button className="bg-warm-600 hover:bg-warm-700 text-white">Save</Button>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="title" className="text-warm-800">Title</Label>
+                <Input
+                  id="title"
+                  placeholder="Title"
+                  className="bg-white/70 border-warm-200 focus:border-warm-400"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                  disabled={loading}
+                  autoComplete="off"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="content" className="text-warm-800">Content</Label>
+                <div className="min-h-[200px]">
+                  <ReactQuill
+                    id="content"
+                    theme="snow"
+                    value={content}
+                    onChange={setContent}
+                    className="min-h-[200px]"
+                    readOnly={loading}
+                  />
+                </div>
+              </div>
+              <Button
+                type="submit"
+                className="bg-warm-600 hover:bg-warm-700 text-white w-full rounded-md px-8 py-3 mt-2"
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save"}
+              </Button>
+            </form>
           </CardContent>
         </Card>
       </div>
