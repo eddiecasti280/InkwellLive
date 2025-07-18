@@ -23,6 +23,11 @@ import {
   Award,
   TrendingUp
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Navbar } from '../components/Navbar';
+import { ThemeToggle } from '../components/ui/theme-toggle';
+import { UserMenu } from '../components/auth/UserMenu';
+import { Feather } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -270,242 +275,264 @@ export default function Profile() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Profile</h1>
-            <p className="text-muted-foreground">Manage your account and preferences</p>
-          </div>
-          {!isEditing && (
-            <Button onClick={() => setIsEditing(true)} className="flex items-center gap-2">
-              <Edit3 className="w-4 h-4" />
-              Edit Profile
-            </Button>
-          )}
+    <>
+      <Navbar>
+        <Link
+          to="/dashboard"
+          className="text-warm-700 hover:text-warm-800 transition-colors dark:text-warm-300 dark:hover:text-warm-200"
+        >
+          Dashboard
+        </Link>
+        <ThemeToggle />
+        {user && <UserMenu />}
+      </Navbar>
+      <div className="container mx-auto px-4 py-8">
+        {/* Back to Home button */}
+        <div className="mb-4">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-muted text-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm border border-border"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+            Back to Home
+          </Link>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Card */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardHeader className="text-center">
-                <div className="relative mx-auto mb-4">
-                  <Avatar className="w-24 h-24 mx-auto">
-                    <AvatarImage src={profile?.avatar_url} alt={profile?.full_name} />
-                    <AvatarFallback className="text-2xl">
-                      {profile?.full_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
-                    </AvatarFallback>
-                  </Avatar>
-                  {isEditing && (
-                    <label className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full p-2 cursor-pointer hover:bg-primary/90 transition-colors">
-                      <Camera className="w-4 h-4" />
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleAvatarUpload}
-                        className="hidden"
-                        disabled={uploadingAvatar}
-                      />
-                    </label>
-                  )}
-                </div>
-                <CardTitle className="text-xl">
-                  {profile?.full_name || 'Anonymous Writer'}
-                </CardTitle>
-                <CardDescription>
-                  @{profile?.username || user?.email?.split('@')[0]}
-                </CardDescription>
-                {profile?.location && (
-                  <p className="text-sm text-muted-foreground">{profile.location}</p>
-                )}
-              </CardHeader>
-              <CardContent>
-                {profile?.bio && (
-                  <p className="text-sm text-muted-foreground mb-4">{profile.bio}</p>
-                )}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="w-4 h-4 text-muted-foreground" />
-                    <span>Member since {formatDate(user?.created_at || '')}</span>
-                  </div>
-                  {profile?.website && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <Award className="w-4 h-4 text-muted-foreground" />
-                      <a 
-                        href={profile.website} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        {profile.website}
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Profile</h1>
+              <p className="text-muted-foreground">Manage your account and preferences</p>
+            </div>
+            {!isEditing && (
+              <Button onClick={() => setIsEditing(true)} className="flex items-center gap-2">
+                <Edit3 className="w-4 h-4" />
+                Edit Profile
+              </Button>
+            )}
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Profile Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>
-                  Update your profile information and preferences
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="full_name">Full Name</Label>
-                    <Input
-                      id="full_name"
-                      value={formData.full_name}
-                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                      disabled={!isEditing}
-                      placeholder="Enter your full name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="username">Username</Label>
-                    <Input
-                      id="username"
-                      value={formData.username}
-                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                      disabled={!isEditing}
-                      placeholder="Choose a username"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="bio">Bio</Label>
-                  <Textarea
-                    id="bio"
-                    value={formData.bio}
-                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    disabled={!isEditing}
-                    placeholder="Tell us about yourself..."
-                    rows={3}
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="location">Location</Label>
-                    <Input
-                      id="location"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      disabled={!isEditing}
-                      placeholder="Where are you from?"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="website">Website</Label>
-                    <Input
-                      id="website"
-                      value={formData.website}
-                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                      disabled={!isEditing}
-                      placeholder="https://yourwebsite.com"
-                    />
-                  </div>
-                </div>
-                {isEditing && (
-                  <div className="flex gap-2 pt-4">
-                    <Button onClick={handleSave} disabled={saving} className="flex items-center gap-2">
-                      <Save className="w-4 h-4" />
-                      {saving ? 'Saving...' : 'Save Changes'}
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => {
-                        setIsEditing(false);
-                        setFormData({
-                          full_name: profile?.full_name || '',
-                          username: profile?.username || '',
-                          bio: profile?.bio || '',
-                          website: profile?.website || '',
-                          location: profile?.location || ''
-                        });
-                      }}
-                    >
-                      <X className="w-4 h-4 mr-2" />
-                      Cancel
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Statistics */}
-            {stats && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Profile Card */}
+            <div className="lg:col-span-1">
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5" />
-                    Writing Statistics
+                <CardHeader className="text-center">
+                  <div className="relative mx-auto mb-4">
+                    <Avatar className="w-24 h-24 mx-auto">
+                      <AvatarImage src={profile?.avatar_url} alt={profile?.full_name} />
+                      <AvatarFallback className="text-2xl">
+                        {profile?.full_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    {isEditing && (
+                      <label className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full p-2 cursor-pointer hover:bg-primary/90 transition-colors">
+                        <Camera className="w-4 h-4" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleAvatarUpload}
+                          className="hidden"
+                          disabled={uploadingAvatar}
+                        />
+                      </label>
+                    )}
+                  </div>
+                  <CardTitle className="text-xl">
+                    {profile?.full_name || 'Anonymous Writer'}
                   </CardTitle>
                   <CardDescription>
-                    Your writing journey at a glance
+                    @{profile?.username || user?.email?.split('@')[0]}
                   </CardDescription>
+                  {profile?.location && (
+                    <p className="text-sm text-muted-foreground">{profile.location}</p>
+                  )}
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center p-4 bg-muted rounded-lg">
-                      <div className="text-2xl font-bold text-primary">{stats.total_stories}</div>
-                      <div className="text-sm text-muted-foreground">Total Stories</div>
+                  {profile?.bio && (
+                    <p className="text-sm text-muted-foreground mb-4">{profile.bio}</p>
+                  )}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Calendar className="w-4 h-4 text-muted-foreground" />
+                      <span>Member since {formatDate(user?.created_at || '')}</span>
                     </div>
-                    <div className="text-center p-4 bg-muted rounded-lg">
-                      <div className="text-2xl font-bold text-primary">{stats.total_words.toLocaleString()}</div>
-                      <div className="text-sm text-muted-foreground">Total Words</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted rounded-lg">
-                      <div className="text-2xl font-bold text-primary">{stats.stories_this_month}</div>
-                      <div className="text-sm text-muted-foreground">This Month</div>
-                    </div>
-                    <div className="text-center p-4 bg-muted rounded-lg">
-                      <div className="text-2xl font-bold text-primary">{stats.average_words_per_story.toLocaleString()}</div>
-                      <div className="text-sm text-muted-foreground">Avg. Words</div>
-                    </div>
-                  </div>
-                  <Separator className="my-4" />
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3">
-                      <BookOpen className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-medium">{stats.longest_story.toLocaleString()} words</div>
-                        <div className="text-sm text-muted-foreground">Longest story</div>
+                    {profile?.website && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <Award className="w-4 h-4 text-muted-foreground" />
+                        <a 
+                          href={profile.website} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline"
+                        >
+                          {profile.website}
+                        </a>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <PenTool className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-medium">{stats.words_this_month.toLocaleString()} words</div>
-                        <div className="text-sm text-muted-foreground">This month</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <User className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-medium">{stats.member_since_days} days</div>
-                        <div className="text-sm text-muted-foreground">Member since</div>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
-            )}
+            </div>
+
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Profile Form */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Personal Information</CardTitle>
+                  <CardDescription>
+                    Update your profile information and preferences
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="full_name">Full Name</Label>
+                      <Input
+                        id="full_name"
+                        value={formData.full_name}
+                        onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                        disabled={!isEditing}
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="username">Username</Label>
+                      <Input
+                        id="username"
+                        value={formData.username}
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                        disabled={!isEditing}
+                        placeholder="Choose a username"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="bio">Bio</Label>
+                    <Textarea
+                      id="bio"
+                      value={formData.bio}
+                      onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                      disabled={!isEditing}
+                      placeholder="Tell us about yourself..."
+                      rows={3}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="location">Location</Label>
+                      <Input
+                        id="location"
+                        value={formData.location}
+                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        disabled={!isEditing}
+                        placeholder="Where are you from?"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="website">Website</Label>
+                      <Input
+                        id="website"
+                        value={formData.website}
+                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                        disabled={!isEditing}
+                        placeholder="https://yourwebsite.com"
+                      />
+                    </div>
+                  </div>
+                  {isEditing && (
+                    <div className="flex gap-2 pt-4">
+                      <Button onClick={handleSave} disabled={saving} className="flex items-center gap-2">
+                        <Save className="w-4 h-4" />
+                        {saving ? 'Saving...' : 'Save Changes'}
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setIsEditing(false);
+                          setFormData({
+                            full_name: profile?.full_name || '',
+                            username: profile?.username || '',
+                            bio: profile?.bio || '',
+                            website: profile?.website || '',
+                            location: profile?.location || ''
+                          });
+                        }}
+                      >
+                        <X className="w-4 h-4 mr-2" />
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Statistics */}
+              {stats && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5" />
+                      Writing Statistics
+                    </CardTitle>
+                    <CardDescription>
+                      Your writing journey at a glance
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center p-4 bg-muted rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{stats.total_stories}</div>
+                        <div className="text-sm text-muted-foreground">Total Stories</div>
+                      </div>
+                      <div className="text-center p-4 bg-muted rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{stats.total_words.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">Total Words</div>
+                      </div>
+                      <div className="text-center p-4 bg-muted rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{stats.stories_this_month}</div>
+                        <div className="text-sm text-muted-foreground">This Month</div>
+                      </div>
+                      <div className="text-center p-4 bg-muted rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{stats.average_words_per_story.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">Avg. Words</div>
+                      </div>
+                    </div>
+                    <Separator className="my-4" />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="flex items-center gap-3">
+                        <BookOpen className="w-5 h-5 text-primary" />
+                        <div>
+                          <div className="font-medium">{stats.longest_story.toLocaleString()} words</div>
+                          <div className="text-sm text-muted-foreground">Longest story</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <PenTool className="w-5 h-5 text-primary" />
+                        <div>
+                          <div className="font-medium">{stats.words_this_month.toLocaleString()} words</div>
+                          <div className="text-sm text-muted-foreground">This month</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <User className="w-5 h-5 text-primary" />
+                        <div>
+                          <div className="font-medium">{stats.member_since_days} days</div>
+                          <div className="text-sm text-muted-foreground">Member since</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
           </div>
-        </div>
-      </motion.div>
-    </div>
+        </motion.div>
+      </div>
+    </>
   );
 } 
