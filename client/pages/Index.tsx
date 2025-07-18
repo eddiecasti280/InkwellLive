@@ -3,8 +3,10 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { ThemeToggle } from "../components/ui/theme-toggle";
 import { BookOpen, PenTool, Users, Heart, Feather, Coffee } from "lucide-react";
+import { useAuth } from "../components/auth/AuthProvider";
 
 export default function Index() {
+  const { user } = useAuth();
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
       {/* Navigation */}
@@ -14,12 +16,6 @@ export default function Index() {
           <span className="text-2xl font-bold text-warm-800">Inkwell</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link
-            to="/dashboard"
-            className="text-warm-700 hover:text-warm-800 transition-colors dark:text-warm-300 dark:hover:text-warm-200"
-          >
-            Dashboard
-          </Link>
           <ThemeToggle />
           <Link to="/auth">
             <Button
@@ -29,15 +25,25 @@ export default function Index() {
               Sign In
             </Button>
           </Link>
-          <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
-            Start Writing
-          </Button>
+          {user ? (
+            <Link to="/dashboard">
+              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/auth">
+              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
+                Start Writing
+              </Button>
+            </Link>
+          )}
         </div>
       </nav>
 
       {/* Hero Section */}
       <section className="py-20 px-6 text-center max-w-4xl mx-auto">
-        <div className="flex justify-center mb-6">
+        <div className="relative flex justify-center mb-6">
           <Coffee className="h-16 w-16 text-warm-600 opacity-80" />
         </div>
         <h1 className="text-5xl md:text-6xl font-bold text-warm-900 mb-6 leading-tight">
@@ -69,6 +75,15 @@ export default function Index() {
               Browse Stories
             </Button>
           </Link>
+        </div>
+        {/* Inserted image below the buttons */}
+        <div className="flex justify-center my-8">
+          <img
+            src="/Remove background project.png"
+            alt="Campfire scene with trees, snake, gnome, and fox"
+            className="max-w-full h-auto rounded-xl"
+            style={{ maxWidth: '500px' }}
+          />
         </div>
       </section>
 

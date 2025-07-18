@@ -7,47 +7,57 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useToast } from '../hooks/use-toast';
 import { Heart } from 'lucide-react';
-import React, { useState } from 'react';
-
-const stories = [
-  {
-    id: 1,
-    title: "The Lantern in the Attic",
-    content: `A mysterious light appears in the old house, drawing the curiosity of a young girl. She embarks on a journey through dust and memories, discovering secrets hidden for generations...`,
-    tags: ["mystery", "adventure"],
-    author: "A. Writer",
-  },
-  {
-    id: 2,
-    title: "Beneath the Willow Tree",
-    content: `Two friends discover a secret world hidden beneath the roots of an ancient willow. Their friendship is tested as they navigate the wonders and dangers of this magical realm...`,
-    tags: ["fantasy", "friendship"],
-    author: "B. Storyteller",
-  },
-  {
-    id: 3,
-    title: "The Clockmaker's Promise",
-    content: `In a town where time stands still, a clockmaker holds the key to everyone's fate. As the townsfolk gather, the clockmaker reveals a promise that will change everything...`,
-    tags: ["drama", "magical realism"],
-    author: "C. Novelist",
-  },
-];
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
 
 export default function ReadingView() {
   const { id } = useParams();
-  const story = stories.find((s) => s.id === Number(id));
   const { user } = useAuth();
   const { toast } = useToast();
+  const [story, setStory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState('');
 
-  if (!story) {
+  useEffect(() => {
+    async function fetchStory() {
+      setLoading(true);
+      setError(null);
+      const { data, error } = await supabase
+        .from('writings')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (error) {
+        setError(error.message);
+        setStory(null);
+      } else {
+        setStory(data);
+      }
+      setLoading(false);
+    }
+    if (id) fetchStory();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
+        <Card className="p-8 text-center">
+          <CardTitle className="mb-4">Loading...</CardTitle>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error || !story) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
         <Card className="p-8 text-center">
           <CardTitle className="mb-4">Story Not Found</CardTitle>
+          <div className="mb-2 text-warm-600">{error}</div>
           <Link to="/stories" className="text-warm-600 hover:underline">Back to Stories</Link>
         </Card>
       </div>
@@ -110,14 +120,16 @@ export default function ReadingView() {
         <Card className="bg-white/90 border-warm-200 dark:bg-amber-900/25 dark:border-amber-700">
           <CardHeader>
             <CardTitle className="text-3xl text-warm-900 dark:text-warm-100 mb-2">{story.title}</CardTitle>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {story.tags.map((tag) => (
-                <Badge key={tag} variant="outline" className="text-xs border-warm-300 text-warm-600 dark:border-warm-600 dark:text-warm-300">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-            <div className="text-warm-700 dark:text-warm-300 text-sm mb-2">By {story.author}</div>
+            {story.tags && Array.isArray(story.tags) && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {story.tags.map((tag) => (
+                  <Badge key={tag} variant="outline" className="text-xs border-warm-300 text-warm-600 dark:border-warm-600 dark:text-warm-300">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
+            {story.author && <div className="text-warm-700 dark:text-warm-300 text-sm mb-2">By {story.author}</div>}
             <div className="flex items-center gap-4 mt-4">
               <Button onClick={handleLike} variant={liked ? 'default' : 'outline'} className={liked ? 'bg-pink-600 text-white' : ''}>
                 <Heart className={liked ? 'fill-pink-600 text-white' : 'text-pink-600'} />

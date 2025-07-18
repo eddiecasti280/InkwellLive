@@ -286,3 +286,9 @@ a, button, [role="button"] {
 .link-hover:hover::after {
   width: 100%;
 }
+
+.steam {
+  outline: none !important;
+  background: linear-gradient(to top, transparent, #e7dbc7 60%, transparent 100%) !important;
+  opacity: 0.5;
+}
