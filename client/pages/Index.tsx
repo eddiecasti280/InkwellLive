@@ -76,19 +76,10 @@ export default function Index() {
             </Button>
           </Link>
         </div>
-        {/* Inserted image below the buttons */}
-        <div className="flex justify-center my-8">
-          <img
-            src="/Remove background project.png"
-            alt="Campfire scene with trees, snake, gnome, and fox"
-            className="max-w-full h-auto rounded-xl"
-            style={{ maxWidth: '500px' }}
-          />
-        </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-6 max-w-6xl mx-auto">
+      <section className="py-10 px-6 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-center text-warm-900 mb-12">
           Everything you need to nurture your craft
         </h2>
