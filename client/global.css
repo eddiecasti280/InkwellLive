@@ -169,3 +169,89 @@
   border-bottom-left-radius: 0.75rem !important;
   border-bottom-right-radius: 0.75rem !important;
 }
+
+/* Page transition enhancements */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.98);
+  transition: opacity 400ms ease-in, transform 400ms ease-in;
+}
+
+/* Smooth hover transitions for interactive elements */
+a, button, [role="button"] {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced button animations */
+.btn-animate {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-animate::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-animate:hover::before {
+  left: 100%;
+}
+
+/* Smooth focus transitions */
+*:focus {
+  transition: outline 0.2s ease;
+}
+
+/* Enhanced link hover effects */
+.link-hover {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: hsl(var(--warm-600));
+  transition: width 0.3s ease;
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}

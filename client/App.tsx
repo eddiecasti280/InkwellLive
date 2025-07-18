@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { PageTransitionWrapper } from "./components/PageTransitionWrapper";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
@@ -24,7 +25,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
+          <PageTransitionWrapper>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/stories" element={<Stories />} />
@@ -32,7 +33,7 @@ const App = () => (
             <Route path="/new-writing" element={<NewWriting />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
-          </Routes>
+          </PageTransitionWrapper>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
