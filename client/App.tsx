@@ -12,10 +12,12 @@ import { AuthProvider } from "./components/auth/AuthProvider";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
+import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 import Stories from "./pages/Stories";
 import ReadingView from "./pages/ReadingView";
 import NewWriting from "./pages/NewWriting";
+import Profile from "./pages/Profile";
 import ReactQuill from "react-quill";
 
 const queryClient = new QueryClient();
@@ -31,7 +33,9 @@ const App = () => (
             <PageTransitionWrapper>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/stories" element={<Stories />} />
               <Route path="/stories/:id" element={<ReadingView />} />
               <Route path="/new-writing" element={<NewWriting />} />
