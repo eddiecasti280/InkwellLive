@@ -12,11 +12,13 @@ import {
 } from '../ui/dropdown-menu';
 import { useAuth } from './AuthProvider';
 import { User, Settings, LogOut, PenTool, BookOpen } from 'lucide-react';
+import { useToast } from '../../hooks/use-toast';
 
 export function UserMenu() {
   const { user, signOut } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   if (!user) {
     return null;
@@ -26,6 +28,11 @@ export function UserMenu() {
     setLoading(true);
     await signOut();
     setLoading(false);
+    toast({
+      title: 'Logged out',
+      description: 'You have been logged out successfully.',
+      variant: 'default',
+    });
     navigate('/');
   };
 
