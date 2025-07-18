@@ -73,6 +73,9 @@
     --sage-300: 114 22% 75%;
     --sage-400: 112 25% 65%;
     --sage-500: 110 30% 55%;
+
+    /* Theme transition duration */
+    --theme-transition-duration: 0.3s;
   }
 
   .dark {
@@ -136,6 +139,9 @@
     --sage-300: 114 25% 45%;
     --sage-400: 112 30% 58%;
     --sage-500: 110 35% 68%;
+
+    /* Theme transition duration */
+    --theme-transition-duration: 0.3s;
   }
 }
 
@@ -146,6 +152,28 @@
 
   body {
     @apply bg-background text-foreground;
+    /* Smooth theme transitions */
+    transition: 
+      background-color var(--theme-transition-duration) ease,
+      color var(--theme-transition-duration) ease;
+  }
+
+  /* Add smooth transitions to all theme-dependent properties */
+  * {
+    transition: 
+      background-color var(--theme-transition-duration) ease,
+      color var(--theme-transition-duration) ease,
+      border-color var(--theme-transition-duration) ease,
+      box-shadow var(--theme-transition-duration) ease;
+  }
+
+  /* Ensure form elements also transition smoothly */
+  input, textarea, select, button {
+    transition: 
+      background-color var(--theme-transition-duration) ease,
+      color var(--theme-transition-duration) ease,
+      border-color var(--theme-transition-duration) ease,
+      box-shadow var(--theme-transition-duration) ease;
   }
 }
 
@@ -154,7 +182,9 @@
   border: 1px solid hsl(var(--warm-200)) !important;
   background: hsla(var(--background), 0.7) !important;
   border-radius: 0.75rem !important;
-  
+  transition: 
+    border-color var(--theme-transition-duration) ease,
+    background-color var(--theme-transition-duration) ease !important;
 }
 
 .ql-toolbar {
@@ -163,6 +193,7 @@
   border-bottom: 1px solid hsl(var(--warm-200)) !important;
   border-bottom-left-radius: 0.75rem !important;
   border-bottom-right-radius: 0.75rem !important;
+  transition: border-color var(--theme-transition-duration) ease !important;
 }
 
 .ql-editor {
