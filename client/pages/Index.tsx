@@ -21,12 +21,14 @@ export default function Index() {
             Dashboard
           </Link>
           <ThemeToggle />
-          <Button
-            variant="outline"
-            className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800"
-          >
-            Sign In
-          </Button>
+          <Link to="/auth">
+            <Button
+              variant="outline"
+              className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800"
+            >
+              Sign In
+            </Button>
+          </Link>
           <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
             Start Writing
           </Button>

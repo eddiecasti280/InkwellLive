@@ -9,6 +9,7 @@ import {
 import { Badge } from "../components/ui/badge";
 import { Input } from "../components/ui/input";
 import { ThemeToggle } from "../components/ui/theme-toggle";
+import { UserMenu } from "../components/auth/UserMenu";
 import {
   Feather,
   Plus,
@@ -82,6 +83,7 @@ export default function Dashboard() {
               New Writing
             </Button>
           </Link>
+          <UserMenu />
         </div>
       </nav>
 
