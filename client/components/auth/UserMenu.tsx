@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
@@ -16,6 +16,7 @@ import { User, Settings, LogOut, PenTool, BookOpen } from 'lucide-react';
 export function UserMenu() {
   const { user, signOut } = useAuth();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   if (!user) {
     return null;
@@ -25,6 +26,7 @@ export function UserMenu() {
     setLoading(true);
     await signOut();
     setLoading(false);
+    navigate('/');
   };
 
   const getUserInitials = () => {
