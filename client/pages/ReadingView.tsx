@@ -2,6 +2,12 @@ import { useParams, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Feather, ArrowLeft } from "lucide-react";
+import { useAuth } from '../components/auth/AuthProvider';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { useToast } from '../hooks/use-toast';
+import { Heart } from 'lucide-react';
+import React, { useState } from 'react';
 
 const stories = [
   {
@@ -30,6 +36,12 @@ const stories = [
 export default function ReadingView() {
   const { id } = useParams();
   const story = stories.find((s) => s.id === Number(id));
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState('');
 
   if (!story) {
     return (
@@ -41,6 +53,40 @@ export default function ReadingView() {
       </div>
     );
   }
+
+  const handleLike = () => {
+    if (!user) {
+      toast({ title: 'Sign in required', description: 'Sign in to like stories.' });
+      return;
+    }
+    if (!liked) {
+      setLikes(likes + 1);
+      setLiked(true);
+    } else {
+      setLikes(likes - 1);
+      setLiked(false);
+    }
+  };
+
+  const handleComment = (e) => {
+    e.preventDefault();
+    if (!user) {
+      toast({ title: 'Sign in required', description: 'Sign in to reply.' });
+      return;
+    }
+    if (!commentText.trim()) return;
+    setComments([
+      {
+        id: Date.now(),
+        user: user.user_metadata?.pen_name || user.user_metadata?.full_name || user.email,
+        text: commentText,
+        timestamp: new Date().toISOString(),
+      },
+      ...comments,
+    ]);
+    setCommentText('');
+    toast({ title: 'Reply added', description: 'Your reply was posted.' });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
@@ -72,10 +118,42 @@ export default function ReadingView() {
               ))}
             </div>
             <div className="text-warm-700 dark:text-warm-300 text-sm mb-2">By {story.author}</div>
+            <div className="flex items-center gap-4 mt-4">
+              <Button onClick={handleLike} variant={liked ? 'default' : 'outline'} className={liked ? 'bg-pink-600 text-white' : ''}>
+                <Heart className={liked ? 'fill-pink-600 text-white' : 'text-pink-600'} />
+                {likes} Like{likes !== 1 ? 's' : ''}
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="prose prose-warm max-w-none text-warm-900 dark:text-warm-100 whitespace-pre-line">
+            <div className="prose prose-warm max-w-none text-warm-900 dark:text-warm-100 whitespace-pre-line mb-8">
               {story.content}
+            </div>
+            <div className="mt-8">
+              <h3 className="text-xl font-bold mb-2">Replies</h3>
+              {user ? (
+                <form onSubmit={handleComment} className="flex gap-2 mb-4">
+                  <Input
+                    value={commentText}
+                    onChange={e => setCommentText(e.target.value)}
+                    placeholder="Write a reply..."
+                    className="flex-1"
+                  />
+                  <Button type="submit" disabled={!commentText.trim()}>Reply</Button>
+                </form>
+              ) : (
+                <div className="mb-4 text-warm-600">Sign in to reply.</div>
+              )}
+              <div className="space-y-4">
+                {comments.length === 0 && <div className="text-warm-500">No replies yet.</div>}
+                {comments.map((c) => (
+                  <div key={c.id} className="p-3 bg-warm-50 border border-warm-200 rounded-lg">
+                    <div className="font-semibold text-warm-800">{c.user}</div>
+                    <div className="text-sm text-warm-700 mb-1">{new Date(c.timestamp).toLocaleString()}</div>
+                    <div className="text-warm-900">{c.text}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
