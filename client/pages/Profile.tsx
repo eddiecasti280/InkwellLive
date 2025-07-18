@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../components/auth/AuthProvider';
 import { supabase } from '../lib/supabaseClient';
 import { Button } from '../components/ui/button';
@@ -28,6 +28,11 @@ import { Navbar } from '../components/Navbar';
 import { ThemeToggle } from '../components/ui/theme-toggle';
 import { UserMenu } from '../components/auth/UserMenu';
 import { Feather } from 'lucide-react';
+
+// DiceBear avatar seeds for selection
+const dicebearSeeds = [
+  'cat', 'dog', 'fox', 'owl', 'bear', 'koala', 'panda', 'lion', 'frog', 'bunny', 'tiger', 'monkey'
+];
 
 interface UserProfile {
   id: string;
@@ -71,12 +76,24 @@ export default function Profile() {
     location: ''
   });
 
+  // Add state for selected avatar type
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+
   useEffect(() => {
     if (user) {
       loadProfile();
       loadStats();
     }
   }, [user]);
+
+  useEffect(() => {
+    // Set initial avatar selection based on profile
+    if (profile?.avatar_url) {
+      setSelectedAvatar(profile.avatar_url);
+    } else {
+      setSelectedAvatar(null);
+    }
+  }, [profile]);
 
   const loadProfile = async () => {
     try {
@@ -169,10 +186,13 @@ export default function Profile() {
 
     setSaving(true);
     try {
+      // If a DiceBear avatar is selected, use its URL; otherwise, use uploaded image
+      const avatarUrlToSave = selectedAvatar || profile?.avatar_url || null;
       const { error } = await supabase
         .from('profiles')
         .update({
           ...formData,
+          avatar_url: avatarUrlToSave,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id);
@@ -323,22 +343,52 @@ export default function Profile() {
                 <CardHeader className="text-center">
                   <div className="relative mx-auto mb-4">
                     <Avatar className="w-24 h-24 mx-auto">
-                      <AvatarImage src={profile?.avatar_url} alt={profile?.full_name} />
-                      <AvatarFallback className="text-2xl">
-                        {profile?.full_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
-                      </AvatarFallback>
+                      {selectedAvatar ? (
+                        <AvatarImage src={selectedAvatar} alt={profile?.full_name} />
+                      ) : (
+                        <AvatarFallback className="text-2xl p-0 bg-transparent">
+                          <img
+                            src={`https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(profile?.username || user?.email || user?.id || 'user')}`}
+                            alt="avatar"
+                            className="w-full h-full object-cover rounded-full"
+                          />
+                        </AvatarFallback>
+                      )}
                     </Avatar>
                     {isEditing && (
-                      <label className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full p-2 cursor-pointer hover:bg-primary/90 transition-colors">
-                        <Camera className="w-4 h-4" />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleAvatarUpload}
-                          className="hidden"
-                          disabled={uploadingAvatar}
-                        />
-                      </label>
+                      <>
+                        <label className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full p-2 cursor-pointer hover:bg-primary/90 transition-colors">
+                          <Camera className="w-4 h-4" />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={async (event) => {
+                              await handleAvatarUpload(event);
+                              // After upload, set selectedAvatar to the uploaded image
+                              if (profile?.avatar_url) setSelectedAvatar(profile.avatar_url);
+                            }}
+                            className="hidden"
+                            disabled={uploadingAvatar}
+                          />
+                        </label>
+                        <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                          {dicebearSeeds.map((seed) => {
+                            const url = `https://api.dicebear.com/7.x/shapes/svg?seed=${seed}`;
+                            return (
+                              <button
+                                key={seed}
+                                type="button"
+                                className={`border-2 rounded-full p-1 transition-all ${selectedAvatar === url ? 'border-primary ring-2 ring-primary' : 'border-border'}`}
+                                onClick={() => {
+                                  setSelectedAvatar(url);
+                                }}
+                              >
+                                <img src={url} alt={seed} className="w-12 h-12 rounded-full" />
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
                     )}
                   </div>
                   <CardTitle className="text-xl">
@@ -374,6 +424,11 @@ export default function Profile() {
                       </div>
                     )}
                   </div>
+                  {isEditing && (
+                    <div className="mt-4 text-xs text-muted-foreground text-center">
+                      You can upload your own image or select a Shapes avatar above.
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
