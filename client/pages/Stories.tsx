@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import { Feather, BookOpen, Eye, Loader2 } from "lucide-react";
+import { Feather, BookOpen, Eye, Loader2, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { useAuth } from "../components/auth/AuthProvider";
 
 export default function Stories() {
+  const { user } = useAuth();
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,8 +56,23 @@ export default function Stories() {
 
   // Function to get author name
   function getAuthorName(story: any): string {
-    // For now, show anonymous since we don't have profile data
-    return 'Anonymous';
+    // Check if it's the current user's story
+    if (user && story.user_id === user.id) {
+      return 'You';
+    }
+    
+    // Create different author names based on user_id to distinguish between authors
+    const authorMap = {
+      'e1a14879-53df-4396-9ff7-d8b83fc6e6da': 'Storyteller', // Our dummy user
+      // Add more mappings as needed
+    };
+    
+    return authorMap[story.user_id] || 'Anonymous Writer';
+  }
+
+  // Function to check if story is by current user
+  function isOwnStory(story: any): boolean {
+    return user && story.user_id === user.id;
   }
 
   return (
@@ -117,7 +134,10 @@ export default function Stories() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex justify-between items-center text-sm text-warm-600 dark:text-warm-300">
-                      <span>By {getAuthorName(story)}</span>
+                      <span className="flex items-center gap-2">
+                        {isOwnStory(story) && <User className="h-4 w-4 text-warm-500" />}
+                        By {getAuthorName(story)}
+                      </span>
                       <span className="flex items-center gap-1">
                         <Eye className="h-4 w-4" />
                         Read
