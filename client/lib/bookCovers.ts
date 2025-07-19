@@ -9,34 +9,34 @@ const BOOK_COVER_PATTERNS = [
   'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=600&fit=crop', // Books on shelf
   'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=600&fit=crop', // Open book
   'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop', // Library
-  'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop', // Reading
   'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=400&h=600&fit=crop', // Bookstore
-  'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=600&fit=crop', // Writing
   'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=400&h=600&fit=crop', // Notebook
   'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=600&fit=crop', // Coffee and book
+  'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop&sat=-50', // Reading (desaturated)
+  'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=600&fit=crop&sat=-50', // Writing (desaturated)
 ];
 
 // Book cover themes for different story types
 const BOOK_COVER_THEMES = {
   fantasy: [
-    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop', // Forest
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop', // Mountains
     'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=600&fit=crop', // Magic forest
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop', // Mountains
+    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop', // Forest
   ],
   mystery: [
-    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop&sat=-50', // Dark forest
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop&sat=-50', // Dark mountains
-    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=600&fit=crop&sat=-50', // Dark magic
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=600&fit=crop&sat=-50&brightness=0.7', // Dark magic forest
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop&sat=-50&brightness=0.7', // Dark mountains
+    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop&sat=-50&brightness=0.7', // Dark forest
   ],
   romance: [
-    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop&sat=50', // Warm forest
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop&sat=50', // Warm mountains
-    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=600&fit=crop&sat=50', // Warm magic
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=600&fit=crop&sat=30&brightness=1.1', // Warm magic forest
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop&sat=30&brightness=1.1', // Warm mountains
+    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop&sat=30&brightness=1.1', // Warm forest
   ],
   scifi: [
-    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop&hue=200', // Blue forest
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop&hue=200', // Blue mountains
-    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=600&fit=crop&hue=200', // Blue magic
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=600&fit=crop&hue=200&sat=20', // Blue magic forest
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop&hue=200&sat=20', // Blue mountains
+    'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=600&fit=crop&hue=200&sat=20', // Blue forest
   ],
   default: BOOK_COVER_PATTERNS
 };

@@ -48,7 +48,7 @@ export function BookCover({
         onError={(e) => {
           // Fallback to a default cover if image fails to load
           const target = e.target as HTMLImageElement;
-          target.src = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=600&fit=crop';
+          target.src = 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=600&fit=crop';
         }}
       />
       
