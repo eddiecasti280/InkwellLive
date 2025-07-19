@@ -80,13 +80,15 @@ export default function Dashboard() {
         </Link>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <Button
-            variant="outline"
-            className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800"
-          >
-            <Eye className="mr-2 h-4 w-4" />
-            Browse Community
-          </Button>
+          <Link to="/stories">
+            <Button
+              variant="outline"
+              className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800"
+            >
+              <Eye className="mr-2 h-4 w-4" />
+              Browse Community
+            </Button>
+          </Link>
           <Link to="/new-writing">
             <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
               <Plus className="mr-2 h-4 w-4" />
