@@ -21,6 +21,7 @@ import EditWriting from "./pages/EditWriting";
 import Profile from "./pages/Profile";
 import BookCoverDemo from "./pages/BookCoverDemo";
 import ReactQuill from "react-quill";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/new-writing" element={<NewWriting />} />
               <Route path="/edit/:id" element={<EditWriting />} />
               <Route path="/book-cover-demo" element={<BookCoverDemo />} />
+              <Route path="/settings" element={<Settings />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </PageTransitionWrapper>
