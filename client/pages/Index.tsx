@@ -2,17 +2,38 @@ import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { ThemeToggle } from "../components/ui/theme-toggle";
-import { BookOpen, PenTool, Users, Heart, Feather, Coffee } from "lucide-react";
+import { BookOpen, PenTool, Users, Heart, Feather, Coffee, Star, Quote, Sparkles, TrendingUp } from "lucide-react";
 import { useAuth } from "../components/auth/AuthProvider";
 
 export default function Index() {
   const { user } = useAuth();
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50 relative overflow-hidden">
+      {/* Floating decorative elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Sparse, faded sparkles - now more visible and well-placed */}
+        <div className="absolute top-24 left-16 opacity-15">
+          <Sparkles className="h-7 w-7 text-warm-400" />
+        </div>
+        <div className="absolute top-1/2 right-24 opacity-10">
+          <Sparkles className="h-10 w-10 text-warm-300" />
+        </div>
+        <div className="absolute bottom-32 left-1/3 opacity-10">
+          <Sparkles className="h-6 w-6 text-warm-200" />
+        </div>
+        <div className="absolute bottom-10 right-1/4 opacity-10">
+          <Sparkles className="h-8 w-8 text-warm-300" />
+        </div>
+        {/* Optionally, keep the feather for a touch of charm */}
+        <div className="absolute bottom-20 right-10 animate-pulse opacity-20">
+          <Feather className="h-7 w-7 text-sage-500" />
+        </div>
+      </div>
+
       {/* Navigation */}
-      <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto">
+      <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto relative z-10">
         <div className="flex items-center gap-2">
-          <Feather className="h-8 w-8 text-warm-700" />
+          <Feather className="h-8 w-8 text-warm-700 animate-pulse" />
           <span className="text-2xl font-bold text-warm-800">Inkwell</span>
         </div>
         <div className="flex items-center gap-4">
@@ -20,20 +41,20 @@ export default function Index() {
           <Link to="/auth">
             <Button
               variant="outline"
-              className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800"
+              className="border-warm-300 text-warm-700 hover:bg-warm-100 dark:border-warm-600 dark:text-warm-300 dark:hover:bg-warm-800 transition-all duration-300 hover:scale-105"
             >
               Sign In
             </Button>
           </Link>
           {user ? (
             <Link to="/dashboard">
-              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
+              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600 transition-all duration-300 hover:scale-105 shadow-lg">
                 Dashboard
               </Button>
             </Link>
           ) : (
             <Link to="/auth">
-              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
+              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600 transition-all duration-300 hover:scale-105 shadow-lg">
                 Start Writing
               </Button>
             </Link>
@@ -42,13 +63,19 @@ export default function Index() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-6 text-center max-w-4xl mx-auto">
+      <section className="py-20 px-6 text-center max-w-4xl mx-auto relative z-10">
         <div className="relative flex justify-center mb-6">
-          <Coffee className="h-16 w-16 text-warm-600 opacity-80" />
+          <div className="relative">
+            {/* Coffee with even slower bounce */}
+            <Coffee className="h-16 w-16 text-warm-600 opacity-80 animate-bounce-slow" />
+            {/* Removed sparkle on mug */}
+          </div>
         </div>
         <h1 className="text-5xl md:text-6xl font-bold text-warm-900 mb-6 leading-tight">
           Your cozy corner of the
-          <span className="text-warm-600 block">writing world</span>
+          <span className="text-warm-600 block bg-gradient-to-r from-warm-600 to-warm-700 bg-clip-text text-transparent leading-snug md:leading-tight" style={{paddingTop: '0.1em', paddingBottom: '0.1em', lineHeight: 1.1}}>
+            writing world
+          </span>
         </h1>
         <p className="text-xl text-warm-700 mb-8 max-w-2xl mx-auto leading-relaxed">
           Store, organize, and share your stories in a warm, welcoming space
@@ -59,7 +86,7 @@ export default function Index() {
           <Link to="/dashboard">
             <Button
               size="lg"
-              className="bg-warm-600 hover:bg-warm-700 text-white px-8 py-4 text-lg"
+              className="bg-warm-600 hover:bg-warm-700 text-white px-8 py-4 text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <PenTool className="mr-2 h-5 w-5" />
               Start Your Journey
@@ -69,7 +96,7 @@ export default function Index() {
             <Button
               size="lg"
               variant="outline"
-              className="border-warm-300 text-warm-700 hover:bg-warm-100 px-8 py-4 text-lg"
+              className="border-warm-300 text-warm-700 hover:bg-warm-100 px-8 py-4 text-lg transition-all duration-300 hover:scale-105"
             >
               <BookOpen className="mr-2 h-5 w-5" />
               Browse Stories
@@ -78,15 +105,40 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="py-16 px-6 max-w-6xl mx-auto relative z-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="space-y-2">
+            <div className="text-3xl font-bold text-warm-700">1,247</div>
+            <div className="text-sm text-warm-600">Stories Shared</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-3xl font-bold text-warm-700">892</div>
+            <div className="text-sm text-warm-600">Active Writers</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-3xl font-bold text-warm-700">15,420</div>
+            <div className="text-sm text-warm-600">Words Written</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-3xl font-bold text-warm-700">4.9</div>
+            <div className="text-sm text-warm-600 flex items-center justify-center gap-1">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              Rating
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="py-10 px-6 max-w-6xl mx-auto">
+      <section className="py-10 px-6 max-w-6xl mx-auto relative z-10">
         <h2 className="text-3xl font-bold text-center text-warm-900 mb-12">
           Everything you need to nurture your craft
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-cream-100 border-warm-200 hover:shadow-lg transition-shadow">
+          <Card className="bg-cream-100 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 group">
             <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-warm-200 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-warm-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-warm-300 transition-colors duration-300">
                 <BookOpen className="h-8 w-8 text-warm-700" />
               </div>
               <h3 className="text-xl font-semibold text-warm-800 mb-3">
@@ -99,9 +151,9 @@ export default function Index() {
             </CardContent>
           </Card>
 
-          <Card className="bg-sage-100 border-sage-200 hover:shadow-lg transition-shadow">
+          <Card className="bg-sage-100 border-sage-200 hover:shadow-lg transition-all duration-300 hover:scale-105 group">
             <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-sage-200 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-sage-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-sage-300 transition-colors duration-300">
                 <Users className="h-8 w-8 text-sage-600" />
               </div>
               <h3 className="text-xl font-semibold text-warm-800 mb-3">
@@ -114,9 +166,9 @@ export default function Index() {
             </CardContent>
           </Card>
 
-          <Card className="bg-warm-100 border-warm-200 hover:shadow-lg transition-shadow">
+          <Card className="bg-warm-100 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 group">
             <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-warm-200 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-warm-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-warm-300 transition-colors duration-300">
                 <Heart className="h-8 w-8 text-warm-700" />
               </div>
               <h3 className="text-xl font-semibold text-warm-800 mb-3">
@@ -131,9 +183,66 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-16 px-6 max-w-6xl mx-auto relative z-10">
+        <h2 className="text-3xl font-bold text-center text-warm-900 mb-12">
+          What writers are saying
+        </h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <Card className="bg-white/80 backdrop-blur-sm border-warm-200 hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <Quote className="h-8 w-8 text-warm-400 mb-4" />
+              <p className="text-warm-700 mb-4 italic">
+                "Inkwell has transformed how I organize my writing. The warm design makes me feel at home, and the community is incredibly supportive."
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-warm-200 rounded-full flex items-center justify-center">
+                  <span className="text-warm-700 font-semibold">S</span>
+                </div>
+                <div>
+                  <div className="font-semibold text-warm-800">Sarah Chen</div>
+                  <div className="text-sm text-warm-600">Fantasy Writer</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/80 backdrop-blur-sm border-warm-200 hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <Quote className="h-8 w-8 text-warm-400 mb-4" />
+              <p className="text-warm-700 mb-4 italic">
+                "Finally, a writing platform that feels personal and inspiring. The abstract book covers are beautiful, and the interface is so intuitive."
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-sage-200 rounded-full flex items-center justify-center">
+                  <span className="text-sage-700 font-semibold">M</span>
+                </div>
+                <div>
+                  <div className="font-semibold text-warm-800">Marcus Rodriguez</div>
+                  <div className="text-sm text-warm-600">Mystery Author</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-warm-600 to-warm-700 text-white">
+      <section className="py-20 px-6 bg-gradient-to-r from-warm-600 to-warm-700 text-white relative z-10">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <TrendingUp className="h-12 w-12 text-white/80 animate-pulse" />
+          </div>
           <h2 className="text-4xl font-bold mb-6">
             Ready to begin your writing journey?
           </h2>
@@ -144,7 +253,7 @@ export default function Index() {
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-warm-700 hover:bg-white hover:text-black px-8 py-4 text-lg"
+              className="border-white text-warm-700 hover:bg-white hover:text-black px-8 py-4 text-lg transition-all duration-300 hover:scale-105 shadow-lg"
             >
               <Feather className="mr-2 h-5 w-5" />
               Get Started Today
@@ -154,10 +263,10 @@ export default function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-warm-100 border-t border-warm-200">
+      <footer className="py-12 px-6 bg-warm-100 border-t border-warm-200 relative z-10">
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Feather className="h-6 w-6 text-warm-700" />
+            <Feather className="h-6 w-6 text-warm-700 animate-pulse" />
             <span className="text-xl font-bold text-warm-800">Inkwell</span>
           </div>
           <p className="text-warm-600">
@@ -165,6 +274,17 @@ export default function Index() {
           </p>
         </div>
       </footer>
+
+      {/* Custom even slower bounce animation for coffee */}
+      <style>{`
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-18px); }
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 5s infinite cubic-bezier(0.4,0,0.6,1);
+        }
+      `}</style>
     </div>
   );
 }
