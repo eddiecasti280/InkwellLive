@@ -63,7 +63,8 @@ export default function Stories() {
     
     // Create different author names based on user_id to distinguish between authors
     const authorMap = {
-      'e1a14879-53df-4396-9ff7-d8b83fc6e6da': 'Storyteller', // Our dummy user
+      'e1a14879-53df-4396-9ff7-d8b83fc6e6da': 'Storyteller', // Old dummy user
+      '57a81547-3e18-41e4-9b78-568010f7a183': 'Community Writer', // New dummy user
       // Add more mappings as needed
     };
     
