@@ -22,43 +22,53 @@ import {
   Heart,
   Eye,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+import { useAuth } from "../components/auth/AuthProvider";
+
+// Function to strip HTML tags and get clean text
+function stripHtml(html: string): string {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+}
 
 export default function Dashboard() {
-  const writings = [
-    {
-      id: 1,
-      title: "The Coffee Shop Chronicles",
-      excerpt:
-        "A collection of short stories inspired by conversations overheard in my favorite café...",
-      category: "Short Stories",
-      lastEdited: "2 hours ago",
-      wordCount: 2340,
-      status: "Draft",
-      tags: ["fiction", "contemporary", "slice-of-life"],
-    },
-    {
-      id: 2,
-      title: "Letters to My Future Self",
-      excerpt:
-        "A series of reflective pieces about dreams, hopes, and the journey of becoming...",
-      category: "Personal Essays",
-      lastEdited: "1 day ago",
-      wordCount: 1850,
-      status: "Published",
-      tags: ["memoir", "reflection", "growth"],
-    },
-    {
-      id: 3,
-      title: "The Art of Slow Mornings",
-      excerpt:
-        "An exploration of mindfulness and finding peace in the quiet moments of dawn...",
-      category: "Poetry",
-      lastEdited: "3 days ago",
-      wordCount: 890,
-      status: "Review",
-      tags: ["poetry", "mindfulness", "nature"],
-    },
-  ];
+  const { user } = useAuth();
+  const [writings, setWritings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchWritings() {
+      if (!user) {
+        console.log("No user found, skipping fetch");
+        return;
+      }
+      
+      console.log("Fetching writings for user:", user.id);
+      console.log("User object:", user);
+      setLoading(true);
+      
+      // Test the exact query
+      const query = supabase
+        .from("writings")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      
+      console.log("Supabase query:", query);
+      
+      const { data, error } = await query;
+      
+      console.log("Raw fetch result:", { data, error });
+      console.log("Data length:", data?.length);
+      console.log("First item:", data?.[0]);
+      
+      if (!error) setWritings(data || []);
+      setLoading(false);
+    }
+    fetchWritings();
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
@@ -156,101 +166,76 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-6">
-            {writings.map((writing) => (
-              <Card
-                key={writing.id}
-                className="bg-white/80 border-warm-200 hover:shadow-lg transition-shadow cursor-pointer dark:bg-amber-900/25 dark:border-amber-700"
-              >
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-warm-900 dark:text-warm-100 text-xl mb-2">
-                        {writing.title}
-                      </CardTitle>
-                      <p className="text-warm-600 dark:text-warm-300 line-clamp-2 mb-3">
-                        {writing.excerpt}
-                      </p>
+            {loading ? (
+              <div className="text-center text-warm-600">Loading your writings...</div>
+            ) : writings.length === 0 ? (
+              <div className="text-center py-20">
+                <Feather className="h-20 w-20 text-warm-400 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-warm-800 mb-3">
+                  Your writing journey begins here
+                </h3>
+                <p className="text-warm-600 mb-6 max-w-md mx-auto">
+                  Start by creating your first piece. Whether it's a story, poem, or
+                  journal entry, every great writer started with a single word.
+                </p>
+                <Link to="/new-writing">
+                  <Button className="bg-warm-600 hover:bg-warm-700 text-white">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Your First Writing
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              writings.map((writing) => (
+                <Card
+                  key={writing.id}
+                  className="bg-white/80 border-warm-200 hover:shadow-lg transition-shadow cursor-pointer dark:bg-amber-900/25 dark:border-amber-700"
+                >
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle className="text-warm-900 dark:text-warm-100 text-xl mb-2">
+                          {writing.title}
+                        </CardTitle>
+                        <p className="text-warm-600 dark:text-warm-300 line-clamp-2 mb-3">
+                          {stripHtml(writing.content || '')}
+                        </p>
+                      </div>
                     </div>
-                    <Badge
-                      variant={
-                        writing.status === "Published"
-                          ? "default"
-                          : writing.status === "Draft"
-                            ? "secondary"
-                            : "outline"
-                      }
-                      className={
-                        writing.status === "Published"
-                          ? "bg-sage-500 text-white"
-                          : writing.status === "Draft"
-                            ? "bg-warm-200 text-warm-800"
-                            : "border-warm-300 text-warm-700"
-                      }
-                    >
-                      {writing.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {writing.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="outline"
-                        className="text-xs border-warm-300 text-warm-600 dark:border-warm-600 dark:text-warm-300"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center text-sm text-warm-600 dark:text-warm-300">
-                    <div className="flex items-center gap-4">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        {writing.lastEdited}
-                      </span>
-                      <span>{writing.wordCount} words</span>
-                      <span className="px-2 py-1 bg-sage-100 rounded text-sage-700 dark:bg-white/20 dark:text-white">
-                        {writing.category}
-                      </span>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex justify-between items-center text-sm text-warm-600 dark:text-warm-300">
+                      <div className="flex items-center gap-4">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          {writing.created_at ? new Date(writing.created_at).toLocaleString() : ''}
+                        </span>
+                        <span>{writing.content ? stripHtml(writing.content).split(' ').filter(word => word.length > 0).length : 0} words</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-warm-300 text-warm-700 hover:bg-warm-100"
+                        >
+                          <Edit3 className="h-4 w-4" />
+                        </Button>
+                        <Link to={`/stories/${writing.id}`}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-sage-300 text-sage-700 hover:bg-sage-100"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="border-warm-300 text-warm-700 hover:bg-warm-100"
-                      >
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="border-sage-300 text-sage-700 hover:bg-sage-100"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
-        </div>
-
-        {/* Empty State (hidden when there are writings) */}
-        <div className="hidden text-center py-20">
-          <Feather className="h-20 w-20 text-warm-400 mx-auto mb-6" />
-          <h3 className="text-2xl font-bold text-warm-800 mb-3">
-            Your writing journey begins here
-          </h3>
-          <p className="text-warm-600 mb-6 max-w-md mx-auto">
-            Start by creating your first piece. Whether it's a story, poem, or
-            journal entry, every great writer started with a single word.
-          </p>
-          <Button className="bg-warm-600 hover:bg-warm-700 text-white">
-            <Plus className="mr-2 h-4 w-4" />
-            Create Your First Writing
-          </Button>
         </div>
       </div>
     </div>

@@ -9,14 +9,24 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { supabase } from "../lib/supabaseClient";
 import { toast } from "../hooks/use-toast";
+import { useAuth } from "../components/auth/AuthProvider";
 
 export default function NewWriting() {
+  const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to save your writing.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!title.trim() || !content.trim()) {
       toast({
         title: "Missing Fields",
@@ -26,7 +36,11 @@ export default function NewWriting() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from("writings").insert([{ title, content }]);
+    const { error } = await supabase.from("writings").insert([{ 
+      title, 
+      content,
+      user_id: user.id 
+    }]);
     if (error) {
       toast({
         title: "Error Saving Writing",
