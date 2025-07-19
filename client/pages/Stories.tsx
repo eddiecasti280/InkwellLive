@@ -5,6 +5,7 @@ import { Feather, BookOpen, Eye, Loader2, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useAuth } from "../components/auth/AuthProvider";
+import { BookCover } from "../components/BookCover";
 
 export default function Stories() {
   const { user } = useAuth();
@@ -120,32 +121,44 @@ export default function Stories() {
             </Link>
           </div>
         ) : (
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {stories.map((story) => (
               <Link to={`/stories/${story.id}`} key={story.id} className="block">
-                <Card className="bg-white/80 border-warm-200 hover:shadow-lg transition-shadow cursor-pointer dark:bg-amber-900/25 dark:border-amber-700">
-                  <CardHeader>
-                    <CardTitle className="text-warm-900 dark:text-warm-100 text-xl mb-2 flex items-center gap-2">
-                      <BookOpen className="h-5 w-5 text-warm-600" />
+                <Card className="bg-white/80 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer dark:bg-amber-900/25 dark:border-amber-700 overflow-hidden">
+                  <div className="relative">
+                    <BookCover
+                      title={story.title}
+                      content={story.content}
+                      size="lg"
+                      className="w-full h-48 rounded-t-lg"
+                    />
+                    <div className="absolute top-3 right-3">
+                      {isOwnStory(story) && (
+                        <Badge className="bg-warm-600 text-white text-xs">
+                          <User className="h-3 w-3 mr-1" />
+                          You
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-warm-900 dark:text-warm-100 text-lg mb-2 line-clamp-2">
                       {story.title}
                     </CardTitle>
-                    <p className="text-warm-600 dark:text-warm-300 line-clamp-2 mb-2">
-                      {getExcerpt(story.content)}
+                    <p className="text-warm-600 dark:text-warm-300 text-sm line-clamp-3">
+                      {getExcerpt(story.content, 120)}
                     </p>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center text-sm text-warm-600 dark:text-warm-300">
-                      <span className="flex items-center gap-2">
-                        {isOwnStory(story) && <User className="h-4 w-4 text-warm-500" />}
-                        By {getAuthorName(story)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Eye className="h-4 w-4" />
-                        Read
-                      </span>
-                    </div>
-                    <div className="text-xs text-warm-500 mt-2">
-                      {new Date(story.created_at).toLocaleDateString()}
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between text-xs text-warm-500">
+                      <div className="flex items-center gap-1">
+                        <User className="h-3 w-3" />
+                        <span>{getAuthorName(story)}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Eye className="h-3 w-3" />
+                        <span>{new Date(story.created_at).toLocaleDateString()}</span>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

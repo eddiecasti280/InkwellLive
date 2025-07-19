@@ -19,6 +19,7 @@ import ReadingView from "./pages/ReadingView";
 import NewWriting from "./pages/NewWriting";
 import EditWriting from "./pages/EditWriting";
 import Profile from "./pages/Profile";
+import BookCoverDemo from "./pages/BookCoverDemo";
 import ReactQuill from "react-quill";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/stories/:id" element={<ReadingView />} />
               <Route path="/new-writing" element={<NewWriting />} />
               <Route path="/edit/:id" element={<EditWriting />} />
+              <Route path="/book-cover-demo" element={<BookCoverDemo />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </PageTransitionWrapper>

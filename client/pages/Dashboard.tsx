@@ -25,6 +25,7 @@ import {
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useAuth } from "../components/auth/AuthProvider";
+import { BookCover } from "../components/BookCover";
 
 // Function to strip HTML tags and get clean text
 function stripHtml(html: string): string {
@@ -87,6 +88,15 @@ export default function Dashboard() {
             >
               <Eye className="mr-2 h-4 w-4" />
               Browse Community
+            </Button>
+          </Link>
+          <Link to="/book-cover-demo">
+            <Button
+              variant="outline"
+              className="border-sage-300 text-sage-700 hover:bg-sage-100"
+            >
+              <BookOpen className="mr-2 h-4 w-4" />
+              Book Covers Demo
             </Button>
           </Link>
           <Link to="/new-writing">
@@ -191,26 +201,36 @@ export default function Dashboard() {
               writings.map((writing) => (
                 <Card
                   key={writing.id}
-                  className="bg-white/80 border-warm-200 hover:shadow-lg transition-shadow cursor-pointer dark:bg-amber-900/25 dark:border-amber-700"
+                  className="bg-white/80 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer dark:bg-amber-900/25 dark:border-amber-700 overflow-hidden"
                 >
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-warm-900 dark:text-warm-100 text-xl mb-2">
-                          {writing.title}
-                        </CardTitle>
-                        <p className="text-warm-600 dark:text-warm-300 line-clamp-2 mb-3">
-                          {stripHtml(writing.content || '')}
-                        </p>
-                      </div>
+                  <div className="relative">
+                    <BookCover
+                      title={writing.title}
+                      content={writing.content}
+                      size="lg"
+                      className="w-full h-48 rounded-t-lg"
+                    />
+                    <div className="absolute top-3 right-3">
+                      <Badge className="bg-warm-600 text-white text-xs">
+                        <Edit3 className="h-3 w-3 mr-1" />
+                        Your Story
+                      </Badge>
                     </div>
+                  </div>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-warm-900 dark:text-warm-100 text-lg mb-2 line-clamp-2">
+                      {writing.title}
+                    </CardTitle>
+                    <p className="text-warm-600 dark:text-warm-300 text-sm line-clamp-3">
+                      {stripHtml(writing.content || '').substring(0, 120)}...
+                    </p>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center text-sm text-warm-600 dark:text-warm-300">
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between text-xs text-warm-500">
                       <div className="flex items-center gap-4">
                         <span className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          {writing.created_at ? new Date(writing.created_at).toLocaleString() : ''}
+                          <Clock className="h-3 w-3" />
+                          {writing.created_at ? new Date(writing.created_at).toLocaleDateString() : ''}
                         </span>
                         <span>{writing.content ? stripHtml(writing.content).split(' ').filter(word => word.length > 0).length : 0} words</span>
                       </div>
@@ -218,17 +238,17 @@ export default function Dashboard() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-warm-300 text-warm-700 hover:bg-warm-100"
+                          className="border-warm-300 text-warm-700 hover:bg-warm-100 text-xs px-2 py-1"
                         >
-                          <Edit3 className="h-4 w-4" />
+                          <Edit3 className="h-3 w-3" />
                         </Button>
                         <Link to={`/stories/${writing.id}`}>
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-sage-300 text-sage-700 hover:bg-sage-100"
+                            className="border-sage-300 text-sage-700 hover:bg-sage-100 text-xs px-2 py-1"
                           >
-                            <Eye className="h-4 w-4" />
+                            <Eye className="h-3 w-3" />
                           </Button>
                         </Link>
                       </div>
