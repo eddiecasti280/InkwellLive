@@ -22,6 +22,7 @@ import Profile from "./pages/Profile";
 import BookCoverDemo from "./pages/BookCoverDemo";
 import ReactQuill from "react-quill";
 import Settings from "./pages/Settings";
+import Inbox from "./pages/Inbox";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/edit/:id" element={<EditWriting />} />
               <Route path="/book-cover-demo" element={<BookCoverDemo />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/inbox" element={<Inbox />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </PageTransitionWrapper>

@@ -21,6 +21,7 @@ import {
   Tags,
   Heart,
   Eye,
+  Mail,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
@@ -103,6 +104,15 @@ export default function Dashboard() {
             <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600">
               <Plus className="mr-2 h-4 w-4" />
               New Writing
+            </Button>
+          </Link>
+          <Link to="/inbox">
+            <Button
+              variant="outline"
+              className="border-sage-300 text-sage-700 hover:bg-sage-100"
+            >
+              <Mail className="mr-2 h-4 w-4" />
+              Inbox
             </Button>
           </Link>
           <UserMenu />
