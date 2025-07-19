@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { ThemeToggle } from "../components/ui/theme-toggle";
-import { BookOpen, PenTool, Users, Heart, Feather, Coffee, Star, Quote, Sparkles, TrendingUp } from "lucide-react";
+import { BookOpen, PenTool, Users, Heart, Feather, Coffee, Star, Quote, Sparkles, TrendingUp, ExternalLink } from "lucide-react";
 import { useAuth } from "../components/auth/AuthProvider";
 
 export default function Index() {
@@ -48,8 +48,9 @@ export default function Index() {
           </Link>
           {user ? (
             <Link to="/dashboard">
-              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600 transition-all duration-300 hover:scale-105 shadow-lg">
+              <Button className="bg-warm-600 hover:bg-warm-700 text-white dark:bg-warm-500 dark:hover:bg-warm-600 transition-all duration-300 hover:scale-105 shadow-lg flex items-center">
                 Dashboard
+                <ExternalLink className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           ) : (
