@@ -4,9 +4,15 @@ import { Card, CardContent } from "../components/ui/card";
 import { ThemeToggle } from "../components/ui/theme-toggle";
 import { BookOpen, PenTool, Users, Heart, Feather, Coffee, Star, Quote, Sparkles, TrendingUp, ExternalLink } from "lucide-react";
 import { useAuth } from "../components/auth/AuthProvider";
+import { useEffect } from "react";
 
 export default function Index() {
   const { user } = useAuth();
+
+  useEffect(() => {
+    document.title = "Inkwell | Landing";
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50 relative overflow-hidden">
       {/* Floating decorative elements */}

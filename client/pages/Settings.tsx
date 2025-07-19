@@ -2,11 +2,15 @@ import { ThemeToggle } from "../components/ui/theme-toggle";
 import { Card, CardContent } from "../components/ui/card";
 import { Switch } from "../components/ui/switch";
 import { Label } from "../components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Settings() {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(false);
+
+  useEffect(() => {
+    document.title = "Inkwell | Settings";
+  }, []);
 
   return (
     <div className="min-h-screen bg-cream-50 py-12 px-4 flex flex-col items-center">

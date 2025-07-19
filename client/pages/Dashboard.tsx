@@ -41,6 +41,10 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Inkwell | Dashboard";
+  }, []);
+
+  useEffect(() => {
     async function fetchWritings() {
       if (!user) {
         console.log("No user found, skipping fetch");

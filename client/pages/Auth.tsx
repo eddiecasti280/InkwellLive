@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignInForm } from '../components/auth/SignInForm';
@@ -10,6 +10,10 @@ type AuthMode = 'signin' | 'signup' | 'magiclink';
 
 export default function Auth() {
   const [mode, setMode] = useState<AuthMode>('signin');
+
+  useEffect(() => {
+    document.title = "Inkwell | Sign In";
+  }, []);
 
   const renderForm = () => {
     switch (mode) {

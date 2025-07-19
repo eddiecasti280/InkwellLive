@@ -11,6 +11,10 @@ export default function AuthCallback() {
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
+    document.title = "Inkwell | Sign In";
+  }, []);
+
+  useEffect(() => {
     const handleAuthCallback = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();

@@ -47,6 +47,10 @@ const sampleStories = [
 ];
 
 export default function BookCoverDemo() {
+  React.useEffect(() => {
+    document.title = "Inkwell | Book Covers";
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
       {/* Navigation */}

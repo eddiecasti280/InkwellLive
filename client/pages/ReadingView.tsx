@@ -43,6 +43,10 @@ export default function ReadingView() {
     if (id) fetchStory();
   }, [id]);
 
+  useEffect(() => {
+    document.title = "Inkwell | Story";
+  }, []);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">

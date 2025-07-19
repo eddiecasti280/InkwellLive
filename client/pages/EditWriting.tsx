@@ -22,6 +22,10 @@ export default function EditWriting() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    document.title = "Inkwell | Edit Writing";
+  }, []);
+
+  useEffect(() => {
     async function fetchWriting() {
       if (!user) {
         setError("Authentication required");

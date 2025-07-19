@@ -4,8 +4,12 @@ import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { ThemeToggle } from "../components/ui/theme-toggle";
 import { UserMenu } from "../components/auth/UserMenu";
+import { useEffect } from "react";
 
 export default function Inbox() {
+  useEffect(() => {
+    document.title = "Inkwell | Inbox";
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
       {/* Navigation */}

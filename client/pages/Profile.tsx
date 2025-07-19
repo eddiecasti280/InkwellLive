@@ -87,6 +87,10 @@ export default function Profile() {
   }, [user]);
 
   useEffect(() => {
+    document.title = "Inkwell | Profile";
+  }, []);
+
+  useEffect(() => {
     // Set initial avatar selection based on profile
     if (profile?.avatar_url) {
       setSelectedAvatar(profile.avatar_url);

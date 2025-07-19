@@ -14,6 +14,10 @@ export default function Stories() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    document.title = "Inkwell | Stories";
+  }, []);
+
+  useEffect(() => {
     async function fetchStories() {
       setLoading(true);
       setError(null);
