@@ -1,7 +1,7 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import { Feather, ArrowLeft } from "lucide-react";
+import { Feather, ArrowLeft, Edit3, Trash2 } from "lucide-react";
 import { useAuth } from '../components/auth/AuthProvider';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -12,6 +12,7 @@ import { supabase } from '../lib/supabaseClient';
 
 export default function ReadingView() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
   const [story, setStory] = useState(null);
@@ -78,6 +79,30 @@ export default function ReadingView() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!user || !story || story.user_id !== user.id) {
+      toast({ title: 'Permission denied', description: 'You can only delete your own stories.' });
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this story? This action cannot be undone.')) {
+      return;
+    }
+
+    const { error } = await supabase
+      .from('writings')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+
+    if (error) {
+      toast({ title: 'Error deleting story', description: error.message });
+    } else {
+      toast({ title: 'Story deleted', description: 'Your story has been deleted successfully.' });
+      navigate('/dashboard');
+    }
+  };
+
   const handleComment = (e) => {
     e.preventDefault();
     if (!user) {
@@ -120,21 +145,31 @@ export default function ReadingView() {
         <Card className="bg-white/90 border-warm-200 dark:bg-amber-900/25 dark:border-amber-700">
           <CardHeader>
             <CardTitle className="text-3xl text-warm-900 dark:text-warm-100 mb-2">{story.title}</CardTitle>
-            {story.tags && Array.isArray(story.tags) && (
-              <div className="flex flex-wrap gap-2 mb-2">
-                {story.tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs border-warm-300 text-warm-600 dark:border-warm-600 dark:text-warm-300">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            )}
             {story.author && <div className="text-warm-700 dark:text-warm-300 text-sm mb-2">By {story.author}</div>}
+            {/* Tags display removed - tags column doesn't exist in database */}
             <div className="flex items-center gap-4 mt-4">
               <Button onClick={handleLike} variant={liked ? 'default' : 'outline'} className={liked ? 'bg-pink-600 text-white' : ''}>
                 <Heart className={liked ? 'fill-pink-600 text-white' : 'text-pink-600'} />
                 {likes} Like{likes !== 1 ? 's' : ''}
               </Button>
+              {user && story.user_id === user.id && (
+                <>
+                  <Link to={`/edit/${story.id}`}>
+                    <Button variant="outline" className="border-warm-300 text-warm-700 hover:bg-warm-100">
+                      <Edit3 className="h-4 w-4 mr-2" />
+                      Edit
+                    </Button>
+                  </Link>
+                  <Button 
+                    variant="outline" 
+                    className="border-red-300 text-red-700 hover:bg-red-100"
+                    onClick={handleDelete}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </Button>
+                </>
+              )}
             </div>
           </CardHeader>
           <CardContent>

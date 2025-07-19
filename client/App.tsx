@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Stories from "./pages/Stories";
 import ReadingView from "./pages/ReadingView";
 import NewWriting from "./pages/NewWriting";
+import EditWriting from "./pages/EditWriting";
 import Profile from "./pages/Profile";
 import ReactQuill from "react-quill";
 
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/stories" element={<Stories />} />
               <Route path="/stories/:id" element={<ReadingView />} />
               <Route path="/new-writing" element={<NewWriting />} />
+              <Route path="/edit/:id" element={<EditWriting />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </PageTransitionWrapper>

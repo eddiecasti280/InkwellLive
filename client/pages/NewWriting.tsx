@@ -4,7 +4,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card"
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/label";
-import { Feather } from "lucide-react";
+import { Badge } from "../components/ui/badge";
+import { Feather, X } from "lucide-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { supabase } from "../lib/supabaseClient";
@@ -15,6 +16,8 @@ export default function NewWriting() {
   const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,8 +57,22 @@ export default function NewWriting() {
       });
       setTitle("");
       setContent("");
+      setTags([]);
     }
     setLoading(false);
+  };
+
+  const handleAddTag = (e) => {
+    e.preventDefault();
+    const tag = tagInput.trim().toLowerCase();
+    if (tag && !tags.includes(tag) && tags.length < 5) {
+      setTags([...tags, tag]);
+      setTagInput("");
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
   return (
@@ -90,6 +107,46 @@ export default function NewWriting() {
                   disabled={loading}
                   autoComplete="off"
                 />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="tags" className="text-warm-800">Tags (optional)</Label>
+                <div className="flex gap-2 mb-2">
+                  <Input
+                    placeholder="Add a tag..."
+                    value={tagInput}
+                    onChange={e => setTagInput(e.target.value)}
+                    onKeyPress={e => e.key === 'Enter' && handleAddTag(e)}
+                    className="flex-1 bg-white/70 border-warm-200 focus:border-warm-400"
+                    disabled={loading || tags.length >= 5}
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleAddTag}
+                    disabled={loading || !tagInput.trim() || tags.length >= 5}
+                    variant="outline"
+                    className="border-warm-300 text-warm-700 hover:bg-warm-100"
+                  >
+                    Add
+                  </Button>
+                </div>
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Badge key={tag} variant="outline" className="border-warm-300 text-warm-600">
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveTag(tag)}
+                          className="ml-1 hover:text-red-600"
+                          disabled={loading}
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                <div className="text-xs text-warm-500">Add up to 5 tags to help others discover your story</div>
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="content" className="text-warm-800">Content</Label>
