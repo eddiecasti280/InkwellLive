@@ -45,6 +45,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [feedLoading, setFeedLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'writings' | 'following'>('writings');
+  const [search, setSearch] = useState(""); // <-- Add search state
 
   useEffect(() => {
     document.title = "Inkwell | Dashboard";
@@ -195,6 +196,8 @@ export default function Dashboard() {
               <Input
                 placeholder="Search your writings..."
                 className="pl-10 bg-white/70 border-warm-200 focus:border-warm-400"
+                value={search}
+                onChange={e => setSearch(e.target.value)} // <-- Make input controlled
               />
             </div>
             <Button
@@ -286,64 +289,73 @@ export default function Dashboard() {
                     </Link>
                   </div>
                 ) : (
-                  writings.map((writing) => (
-                    <Card
-                      key={writing.id}
-                      className="bg-white/80 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer dark:bg-amber-900/25 dark:border-amber-700 overflow-hidden"
-                    >
-                      <div className="relative">
-                        <BookCover
-                          title={writing.title}
-                          content={writing.content}
-                          size="lg"
-                          className="w-full h-48 rounded-t-lg"
-                        />
-                        <div className="absolute top-3 right-3">
-                          <Badge className="bg-warm-600 text-white text-xs">
-                            <Edit3 className="h-3 w-3 mr-1" />
-                            Your Story
-                          </Badge>
-                        </div>
-                      </div>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-warm-900 dark:text-warm-100 text-lg mb-2 line-clamp-2">
-                          {writing.title}
-                        </CardTitle>
-                        <p className="text-warm-600 dark:text-warm-300 text-sm line-clamp-3">
-                          {stripHtml(writing.content || '').substring(0, 120)}...
-                        </p>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="flex items-center justify-between text-xs text-warm-500">
-                          <div className="flex items-center gap-4">
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {writing.created_at ? new Date(writing.created_at).toLocaleDateString() : ''}
-                            </span>
-                            <span>{writing.content ? stripHtml(writing.content).split(' ').filter(word => word.length > 0).length : 0} words</span>
+                  // Filter writings by search
+                  writings
+                    .filter(writing => {
+                      if (!search.trim()) return true;
+                      const q = search.toLowerCase();
+                      const title = (writing.title || "").toLowerCase();
+                      const content = stripHtml(writing.content || "").toLowerCase();
+                      return title.includes(q) || content.includes(q);
+                    })
+                    .map((writing) => (
+                      <Card
+                        key={writing.id}
+                        className="bg-white/80 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer dark:bg-amber-900/25 dark:border-amber-700 overflow-hidden"
+                      >
+                        <div className="relative">
+                          <BookCover
+                            title={writing.title}
+                            content={writing.content}
+                            size="lg"
+                            className="w-full h-48 rounded-t-lg"
+                          />
+                          <div className="absolute top-3 right-3">
+                            <Badge className="bg-warm-600 text-white text-xs">
+                              <Edit3 className="h-3 w-3 mr-1" />
+                              Your Story
+                            </Badge>
                           </div>
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="border-warm-300 text-warm-700 hover:bg-warm-100 text-xs px-2 py-1"
-                            >
-                              <Edit3 className="h-3 w-3" />
-                            </Button>
-                            <Link to={`/stories/${writing.id}`}>
+                        </div>
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-warm-900 dark:text-warm-100 text-lg mb-2 line-clamp-2">
+                            {writing.title}
+                          </CardTitle>
+                          <p className="text-warm-600 dark:text-warm-300 text-sm line-clamp-3">
+                            {stripHtml(writing.content || '').substring(0, 120)}...
+                          </p>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <div className="flex items-center justify-between text-xs text-warm-500">
+                            <div className="flex items-center gap-4">
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {writing.created_at ? new Date(writing.created_at).toLocaleDateString() : ''}
+                              </span>
+                              <span>{writing.content ? stripHtml(writing.content).split(' ').filter(word => word.length > 0).length : 0} words</span>
+                            </div>
+                            <div className="flex gap-2">
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="border-sage-300 text-sage-700 hover:bg-sage-100 text-xs px-2 py-1"
+                                className="border-warm-300 text-warm-700 hover:bg-warm-100 text-xs px-2 py-1"
                               >
-                                <Eye className="h-3 w-3" />
+                                <Edit3 className="h-3 w-3" />
                               </Button>
-                            </Link>
+                              <Link to={`/stories/${writing.id}`}>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="border-sage-300 text-sage-700 hover:bg-sage-100 text-xs px-2 py-1"
+                                >
+                                  <Eye className="h-3 w-3" />
+                                </Button>
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
+                        </CardContent>
+                      </Card>
+                    ))
                 )}
               </>
             )}
