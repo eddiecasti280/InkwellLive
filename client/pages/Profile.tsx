@@ -28,6 +28,9 @@ import { Navbar } from '../components/Navbar';
 import { ThemeToggle } from '../components/ui/theme-toggle';
 import { UserMenu } from '../components/auth/UserMenu';
 import { Feather } from 'lucide-react';
+import { FollowersModal } from '../components/FollowersModal';
+import { FollowingModal } from '../components/FollowingModal';
+import { FollowButton } from '../components/FollowButton';
 
 // DiceBear avatar seeds for selection
 const dicebearSeeds = [
@@ -43,6 +46,8 @@ interface UserProfile {
   avatar_url?: string;
   website?: string;
   location?: string;
+  followers_count: number;
+  following_count: number;
   created_at: string;
   updated_at: string;
 }
@@ -404,6 +409,18 @@ export default function Profile() {
                   {profile?.location && (
                     <p className="text-sm text-muted-foreground">{profile.location}</p>
                   )}
+                  
+                  {/* Follow Stats */}
+                  <div className="flex items-center gap-4 mt-4">
+                    <FollowersModal 
+                      userId={profile?.id || ''} 
+                      followersCount={profile?.followers_count || 0}
+                    />
+                    <FollowingModal 
+                      userId={profile?.id || ''} 
+                      followingCount={profile?.following_count || 0}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {profile?.bio && (

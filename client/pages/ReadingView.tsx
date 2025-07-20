@@ -6,9 +6,10 @@ import { useAuth } from '../components/auth/AuthProvider';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useToast } from '../hooks/use-toast';
-import { Heart } from 'lucide-react';
+import { Heart, User } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { FollowButton } from '../components/FollowButton';
 
 export default function ReadingView() {
   const { id } = useParams();
@@ -149,8 +150,19 @@ export default function ReadingView() {
         <Card className="bg-white/90 border-warm-200 dark:bg-amber-900/25 dark:border-amber-700">
           <CardHeader>
             <CardTitle className="text-3xl text-warm-900 dark:text-warm-100 mb-2">{story.title}</CardTitle>
-            {story.author && <div className="text-warm-700 dark:text-warm-300 text-sm mb-2">By {story.author}</div>}
-            {/* Tags display removed - tags column doesn't exist in database */}
+            
+            {/* Author Info */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4 text-warm-600" />
+                  <span className="text-warm-700 dark:text-warm-300 text-sm">
+                    By {story.author || 'Anonymous Writer'}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
             <div className="flex items-center gap-4 mt-4">
               <Button onClick={handleLike} variant={liked ? 'default' : 'outline'} className={liked ? 'bg-pink-600 text-white' : ''}>
                 <Heart className={liked ? 'fill-pink-600 text-white' : 'text-pink-600'} />

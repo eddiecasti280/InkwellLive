@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useAuth } from "../components/auth/AuthProvider";
 import { BookCover } from "../components/BookCover";
+import { FollowButton } from "../components/FollowButton";
+import { FollowSuggestions } from "../components/FollowSuggestions";
 
 export default function Stories() {
   const { user } = useAuth();
@@ -170,6 +172,11 @@ export default function Stories() {
             ))}
           </div>
         )}
+        
+        {/* Follow Suggestions */}
+        <div className="mt-12">
+          <FollowSuggestions limit={6} />
+        </div>
       </div>
     </div>
   );

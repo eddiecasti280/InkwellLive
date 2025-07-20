@@ -22,11 +22,14 @@ import {
   Heart,
   Eye,
   Mail,
+  User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useAuth } from "../components/auth/AuthProvider";
 import { BookCover } from "../components/BookCover";
+import { FollowSuggestions } from "../components/FollowSuggestions";
+import { getFollowingFeed } from "../lib/following";
 
 // Function to strip HTML tags and get clean text
 function stripHtml(html: string): string {
@@ -38,7 +41,10 @@ function stripHtml(html: string): string {
 export default function Dashboard() {
   const { user } = useAuth();
   const [writings, setWritings] = useState([]);
+  const [followingFeed, setFollowingFeed] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [feedLoading, setFeedLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'writings' | 'following'>('writings');
 
   useEffect(() => {
     document.title = "Inkwell | Dashboard";
@@ -75,6 +81,28 @@ export default function Dashboard() {
     }
     fetchWritings();
   }, [user]);
+
+  useEffect(() => {
+    async function fetchFollowingFeed() {
+      if (!user || activeTab !== 'following') return;
+      
+      setFeedLoading(true);
+      try {
+        const { data, error } = await getFollowingFeed();
+        if (error) {
+          console.error('Error loading following feed:', error);
+        } else {
+          setFollowingFeed(data || []);
+        }
+      } catch (error) {
+        console.error('Error loading following feed:', error);
+      } finally {
+        setFeedLoading(false);
+      }
+    }
+    
+    fetchFollowingFeed();
+  }, [user, activeTab]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-warm-50 to-sage-50">
@@ -179,100 +207,231 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Writings Grid */}
-        <div className="grid gap-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-warm-900">Your Writings</h2>
-            <Button
-              variant="outline"
-              className="border-warm-300 text-warm-700 hover:bg-warm-100"
+        {/* Tab Navigation */}
+        <div className="mb-8">
+          <div className="flex space-x-1 bg-white/70 rounded-lg p-1 border border-warm-200">
+            <button
+              onClick={() => setActiveTab('writings')}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'writings'
+                  ? 'bg-warm-600 text-white shadow-sm'
+                  : 'text-warm-700 hover:text-warm-900 hover:bg-warm-50'
+              }`}
             >
-              Sort by Recent
-            </Button>
+              Your Writings
+            </button>
+            <button
+              onClick={() => setActiveTab('following')}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'following'
+                  ? 'bg-warm-600 text-white shadow-sm'
+                  : 'text-warm-700 hover:text-warm-900 hover:bg-warm-50'
+              }`}
+            >
+              Following Feed
+            </button>
           </div>
+        </div>
+
+        {/* Content Grid */}
+        <div className="grid gap-6">
+          {activeTab === 'writings' && (
+            <>
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-warm-900">Your Writings</h2>
+                <Button
+                  variant="outline"
+                  className="border-warm-300 text-warm-700 hover:bg-warm-100"
+                >
+                  Sort by Recent
+                </Button>
+              </div>
+            </>
+          )}
+          
+          {activeTab === 'following' && (
+            <>
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-warm-900">Following Feed</h2>
+                <Button
+                  variant="outline"
+                  className="border-warm-300 text-warm-700 hover:bg-warm-100"
+                >
+                  Sort by Recent
+                </Button>
+              </div>
+            </>
+          )}
 
           <div className="grid gap-6">
-            {loading ? (
-              <div className="text-center text-warm-600">Loading your writings...</div>
-            ) : writings.length === 0 ? (
-              <div className="text-center py-20">
-                <Feather className="h-20 w-20 text-warm-400 mx-auto mb-6" />
-                <h3 className="text-2xl font-bold text-warm-800 mb-3">
-                  Your writing journey begins here
-                </h3>
-                <p className="text-warm-600 mb-6 max-w-md mx-auto">
-                  Start by creating your first piece. Whether it's a story, poem, or
-                  journal entry, every great writer started with a single word.
-                </p>
-                <Link to="/new-writing">
-                  <Button className="bg-warm-600 hover:bg-warm-700 text-white">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Your First Writing
-                  </Button>
-                </Link>
-              </div>
-            ) : (
-              writings.map((writing) => (
-                <Card
-                  key={writing.id}
-                  className="bg-white/80 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer dark:bg-amber-900/25 dark:border-amber-700 overflow-hidden"
-                >
-                  <div className="relative">
-                    <BookCover
-                      title={writing.title}
-                      content={writing.content}
-                      size="lg"
-                      className="w-full h-48 rounded-t-lg"
-                    />
-                    <div className="absolute top-3 right-3">
-                      <Badge className="bg-warm-600 text-white text-xs">
-                        <Edit3 className="h-3 w-3 mr-1" />
-                        Your Story
-                      </Badge>
-                    </div>
-                  </div>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-warm-900 dark:text-warm-100 text-lg mb-2 line-clamp-2">
-                      {writing.title}
-                    </CardTitle>
-                    <p className="text-warm-600 dark:text-warm-300 text-sm line-clamp-3">
-                      {stripHtml(writing.content || '').substring(0, 120)}...
+            {activeTab === 'writings' && (
+              <>
+                {loading ? (
+                  <div className="text-center text-warm-600">Loading your writings...</div>
+                ) : writings.length === 0 ? (
+                  <div className="text-center py-20">
+                    <Feather className="h-20 w-20 text-warm-400 mx-auto mb-6" />
+                    <h3 className="text-2xl font-bold text-warm-800 mb-3">
+                      Your writing journey begins here
+                    </h3>
+                    <p className="text-warm-600 mb-6 max-w-md mx-auto">
+                      Start by creating your first piece. Whether it's a story, poem, or
+                      journal entry, every great writer started with a single word.
                     </p>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex items-center justify-between text-xs text-warm-500">
-                      <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {writing.created_at ? new Date(writing.created_at).toLocaleDateString() : ''}
-                        </span>
-                        <span>{writing.content ? stripHtml(writing.content).split(' ').filter(word => word.length > 0).length : 0} words</span>
+                    <Link to="/new-writing">
+                      <Button className="bg-warm-600 hover:bg-warm-700 text-white">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Create Your First Writing
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  writings.map((writing) => (
+                    <Card
+                      key={writing.id}
+                      className="bg-white/80 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer dark:bg-amber-900/25 dark:border-amber-700 overflow-hidden"
+                    >
+                      <div className="relative">
+                        <BookCover
+                          title={writing.title}
+                          content={writing.content}
+                          size="lg"
+                          className="w-full h-48 rounded-t-lg"
+                        />
+                        <div className="absolute top-3 right-3">
+                          <Badge className="bg-warm-600 text-white text-xs">
+                            <Edit3 className="h-3 w-3 mr-1" />
+                            Your Story
+                          </Badge>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-warm-300 text-warm-700 hover:bg-warm-100 text-xs px-2 py-1"
-                        >
-                          <Edit3 className="h-3 w-3" />
-                        </Button>
-                        <Link to={`/stories/${writing.id}`}>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-sage-300 text-sage-700 hover:bg-sage-100 text-xs px-2 py-1"
-                          >
-                            <Eye className="h-3 w-3" />
-                          </Button>
-                        </Link>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-warm-900 dark:text-warm-100 text-lg mb-2 line-clamp-2">
+                          {writing.title}
+                        </CardTitle>
+                        <p className="text-warm-600 dark:text-warm-300 text-sm line-clamp-3">
+                          {stripHtml(writing.content || '').substring(0, 120)}...
+                        </p>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <div className="flex items-center justify-between text-xs text-warm-500">
+                          <div className="flex items-center gap-4">
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {writing.created_at ? new Date(writing.created_at).toLocaleDateString() : ''}
+                            </span>
+                            <span>{writing.content ? stripHtml(writing.content).split(' ').filter(word => word.length > 0).length : 0} words</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-warm-300 text-warm-700 hover:bg-warm-100 text-xs px-2 py-1"
+                            >
+                              <Edit3 className="h-3 w-3" />
+                            </Button>
+                            <Link to={`/stories/${writing.id}`}>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-sage-300 text-sage-700 hover:bg-sage-100 text-xs px-2 py-1"
+                              >
+                                <Eye className="h-3 w-3" />
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </>
+            )}
+
+            {activeTab === 'following' && (
+              <>
+                {feedLoading ? (
+                  <div className="text-center text-warm-600">Loading following feed...</div>
+                ) : followingFeed.length === 0 ? (
+                  <div className="text-center py-20">
+                    <Feather className="h-20 w-20 text-warm-400 mx-auto mb-6" />
+                    <h3 className="text-2xl font-bold text-warm-800 mb-3">
+                      Start following writers
+                    </h3>
+                    <p className="text-warm-600 mb-6 max-w-md mx-auto">
+                      Follow other writers to see their latest stories in your feed.
+                    </p>
+                    <Link to="/stories">
+                      <Button className="bg-warm-600 hover:bg-warm-700 text-white">
+                        <Eye className="mr-2 h-4 w-4" />
+                        Browse Community
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  followingFeed.map((writing) => (
+                    <Card
+                      key={writing.id}
+                      className="bg-white/80 border-warm-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer dark:bg-amber-900/25 dark:border-amber-700 overflow-hidden"
+                    >
+                      <div className="relative">
+                        <BookCover
+                          title={writing.title}
+                          content={writing.content}
+                          size="lg"
+                          className="w-full h-48 rounded-t-lg"
+                        />
+                        <div className="absolute top-3 right-3">
+                          <Badge className="bg-sage-600 text-white text-xs">
+                            <User className="h-3 w-3 mr-1" />
+                            Anonymous
+                          </Badge>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-warm-900 dark:text-warm-100 text-lg mb-2 line-clamp-2">
+                          {writing.title}
+                        </CardTitle>
+                        <p className="text-warm-600 dark:text-warm-300 text-sm line-clamp-3">
+                          {stripHtml(writing.content || '').substring(0, 120)}...
+                        </p>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <div className="flex items-center justify-between text-xs text-warm-500">
+                          <div className="flex items-center gap-4">
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {writing.created_at ? new Date(writing.created_at).toLocaleDateString() : ''}
+                            </span>
+                            <span>{writing.content ? stripHtml(writing.content).split(' ').filter(word => word.length > 0).length : 0} words</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <Link to={`/stories/${writing.id}`}>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-sage-300 text-sage-700 hover:bg-sage-100 text-xs px-2 py-1"
+                              >
+                                <Eye className="h-3 w-3" />
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </>
             )}
           </div>
         </div>
+
+        {/* Follow Suggestions */}
+        {activeTab === 'writings' && (
+          <div className="mt-8">
+            <FollowSuggestions limit={3} />
+          </div>
+        )}
       </div>
     </div>
   );
