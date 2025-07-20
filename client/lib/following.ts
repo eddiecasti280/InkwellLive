@@ -219,26 +219,13 @@ export async function getFollowSuggestions(limit: number = 10): Promise<{ data: 
       return { data: [], error: 'User not authenticated' };
     }
 
-    // Get users that the current user is already following
-    const { data: followingData, error: followingError } = await supabase
-      .from('follows')
-      .select('following_id')
-      .eq('follower_id', user.id);
-
-    if (followingError) {
-      return { data: [], error: followingError.message };
-    }
-
-    const followingIds = followingData?.map(f => f.following_id) || [];
-    const excludeIds = [...followingIds, user.id]; // Exclude self and already following
-
-    // Get random users not being followed
-    const { data, error } = await supabase
+    let query = supabase
       .from('profiles')
       .select('id, full_name, username, avatar_url, followers_count, following_count')
-      .not('id', 'in', `(${excludeIds.map(id => `'${id}'`).join(',')})`)
+      .neq('id', user.id)
       .order('followers_count', { ascending: false })
       .limit(limit);
+    const { data, error } = await query;
 
     if (error) {
       return { data: [], error: error.message };
