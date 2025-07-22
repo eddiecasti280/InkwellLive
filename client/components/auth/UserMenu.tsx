@@ -77,7 +77,7 @@ export function UserMenu() {
         <DropdownMenuItem asChild>
           <Link to="/dashboard" className="flex items-center cursor-pointer">
             <PenTool className="mr-2 h-4 w-4" />
-            <span>My Writings</span>
+            <span>Your Writings</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
