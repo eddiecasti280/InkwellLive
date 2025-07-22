@@ -10,6 +10,17 @@ import { Heart, User } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { FollowButton } from '../components/FollowButton';
+import { marked } from "marked";
+
+function MarkdownRenderer({ content }: { content: string }) {
+  const html = marked.parse(content || "");
+  return (
+    <div
+      className="prose prose-warm max-w-none text-warm-900 dark:text-warm-100 whitespace-pre-line mb-8"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
 
 export default function ReadingView() {
   const { id } = useParams();
@@ -189,9 +200,7 @@ export default function ReadingView() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="prose prose-warm max-w-none text-warm-900 dark:text-warm-100 whitespace-pre-line mb-8">
-              {story.content}
-            </div>
+            <MarkdownRenderer content={story.content} />
             <div className="mt-8">
               <h3 className="text-xl font-bold mb-2">Replies</h3>
               {user ? (
