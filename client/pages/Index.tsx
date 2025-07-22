@@ -271,12 +271,12 @@ export default function Index() {
 
       {/* Footer */}
       <footer className="py-12 px-6 bg-warm-100 border-t border-warm-200 relative z-10">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-2 mb-4 justify-start">
             <Feather className="h-6 w-6 text-warm-700 animate-pulse" />
             <span className="text-xl font-bold text-warm-800">Inkwell</span>
           </div>
-          <p className="text-warm-600">
+          <p className="text-warm-600 text-left">
             A warm space for writers to grow, create, and connect.
           </p>
           <div className="mt-8 flex flex-col md:flex-row md:justify-between md:items-center gap-6">
