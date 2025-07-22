@@ -294,8 +294,8 @@ export default function Index() {
             </div>
             {/* Contact/About Right */}
             <div className="flex gap-6 justify-center md:justify-end w-full md:w-auto order-1 md:order-2">
-              <a href="mailto:contact@inkwell.com" className="text-warm-700 hover:underline">Contact</a>
-              <a href="/about" className="text-warm-700 hover:underline">About</a>
+              <Link to="/contact" className="text-warm-700 hover:underline">Contact</Link>
+              <Link to="/about" className="text-warm-700 hover:underline">About</Link>
             </div>
           </div>
         </div>
